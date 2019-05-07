@@ -1,9 +1,16 @@
+#!usr/bin/python3
+# UTF8
+# Date: Tue 07 May 2019 16:23:35 CEST 
+# Author: Nicolas Flandrois
 class Question:
+	"""This class defines the menu and questions 
+	to navigate through the script."""
+	
 	def __init__(self, question, choices**):
 		#Stocker selfquestion & self choices
-		pass
-choices = ['pâte à tartiner', 'confiture', 'salé']
-question = "veuillez choisir une catégorie: "
+		self.question = "veuillez choisir une catégorie: "
+		self.choices = ['pâte à tartiner', 'confiture', 'salé']
+
 
 def menu(choices, question):
 	choice = None
@@ -21,5 +28,8 @@ def menu(choices, question):
 			else:
 				raise
 		except:
-			print("Veuillez entrer un nombre entre 1 et " + str(len(choices)) + ".")
+			print(
+				"Veuillez entrer un nombre entre 1 et " 
+				+ str(len(choices)) + "."
+				)
 	return choice
