@@ -33,3 +33,5 @@ def menu(choices, question):
 				+ str(len(choices)) + "."
 				)
 	return choice
+
+menu(question.choices, question.question) #To optimise, & Make it work
