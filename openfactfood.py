@@ -6,10 +6,9 @@ class Question:
 	"""This class defines the menu and questions 
 	to navigate through the script."""
 	
-<<<<<<< HEAD
 	def __init__(self, question, choices**):#Why the "choices**"
-		self.question = ""#"veuillez choisir une catégorie: "
-		self.choices =  []#['pâte à tartiner', 'confiture', 'coulis']
+		self.question = ""
+		self.choices =  []
 
 
 	def menu(self, question, choices):
@@ -48,36 +47,5 @@ q4 = ""
 c4 = []
 
 #TESTS LINES
-quest = Question(q, c)
-quest.menu(q, c)
-=======
-	def __init__(self, question, choices**):
-		#Stocker selfquestion & self choices
-		self.question = "veuillez choisir une catégorie: "
-		self.choices = ['pâte à tartiner', 'confiture', 'salé']
-
-
-def menu(choices, question):
-	choice = None
-
-	print(question)
-
-	for num, choice in enumerate(choices):
-		print(str(num+1) + " : "+ choice)
-
-	while True:
-		try:
-			choice = int(input())
-			if choice in range(1, len(choices)+1):
-				break
-			else:
-				raise
-		except:
-			print(
-				"Veuillez entrer un nombre entre 1 et " 
-				+ str(len(choices)) + "."
-				)
-	return choice
-
-menu(question.choices, question.question) #To optimise, & Make it work
->>>>>>> master
+quest = Question()
+quest.menu(q1, c1)
