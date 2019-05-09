@@ -39,7 +39,7 @@ class Question:
 #Category menu's questions & choices
 c = None
 q0 = "Veuillez choisir une catégorie: "
-c0 = ['pâte à tartiner', 'confiture', 'coulis']
+c0 = ['pâte à tartiner', 'confiture', 'liquide']
 #Products's questions & choices
 q1 = "veuillez choisir un produit : "
 c1 = []
@@ -55,7 +55,7 @@ quest0 = Question(q0, c0)
 quest0.menu(q0, c0)
 
 if quest0.c == "1":
-	c1 = ["Noisette Cacao", "Speculos", "Beurre de Cacaouette"]
+	c1 = ["Noisette Cacao", "Speculos", "Beurre de Cacahuète"]
 elif quest0.c == "2":
 	c1 = ["Confiture de Fraise", "Confiture d'Abricot", "Confiture d'Orange"]
 else:
