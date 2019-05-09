@@ -6,13 +6,24 @@ class Menu:
 	"""This class defines the menu and questions 
 	to navigate through the script."""
 	
-	def __init__(self, question, *choices):
-		self.question = ""
-		self.choices =  []
-		self.c = None
+	#def __init__(self, question, *choices):
+	def __init__(self):	
+		self.c = 0
+		self.q = ["Veuillez choisir une catégorie: ",
+		"veuillez choisir un produit : ",
+		"Voulez vous substituer ce produit? ", 
+		"Historique de substitution? "]
+		#Category menu's choices
+		self.c0 = ['pâte à tartiner', 'confiture', 'liquide']
+		#Products's choices
+		#c1's list will be define later depending on previous answer
+		#Sustitution's choices
+		self.c2 = ["Oui", "Non"]
+		#Substitutes Historic's questions & choices
+		self.c3 = ["Oui", "Non"]
 
 
-	def menu(self, question, choices):
+	def question(self, question, choices):
 		choice = None
 
 		print(question)
@@ -32,6 +43,16 @@ class Menu:
 					"Veuillez entrer un nombre entre 1 et " 
 					+ str(len(choices)) + "."
 					)
-		choicetxt = choices[choice-1]
-		print("Vous avez choisit: " + choicetxt)
-		self.c = str(choice)
+		print("Vous avez choisit: " + choices[choice-1])
+		self.c = choice
+
+	# def c1(self, c):
+	# 	"""This function defines the list of c1's choices, 
+	# 	depending on prenvious answer."""
+	# 	if c == "1":
+	# 		c1 = ["Noisette Cacao", "Speculos", "Beurre de Cacahuète"]
+	# 	elif c == "2":
+	# 		c1 = ["Confiture de Fraise", "Confiture d'Abricot", "Confiture d'Orange"]
+	# 	elif c == "3":
+	# 		c1 = ["Coulis de Fraise", "Miel", "Sirop d'érable"]
+	# 	print("Error")
