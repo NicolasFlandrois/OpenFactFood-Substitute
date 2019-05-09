@@ -45,14 +45,3 @@ class Menu:
 					)
 		print("Vous avez choisit: " + choices[choice-1])
 		self.c = choice
-
-	# def c1(self, c):
-	# 	"""This function defines the list of c1's choices, 
-	# 	depending on prenvious answer."""
-	# 	if c == "1":
-	# 		c1 = ["Noisette Cacao", "Speculos", "Beurre de Cacahuète"]
-	# 	elif c == "2":
-	# 		c1 = ["Confiture de Fraise", "Confiture d'Abricot", "Confiture d'Orange"]
-	# 	elif c == "3":
-	# 		c1 = ["Coulis de Fraise", "Miel", "Sirop d'érable"]
-	# 	print("Error")

@@ -10,7 +10,6 @@ if __name__ == '__main__':
 	cycle0 = Menu()
 	cycle0.question(cycle0.q[0], cycle0.c0)
 
-#	c1 = cycle0.c1(c)
 	if cycle0.c == "1":
 		c1 = ["Noisette Cacao", "Speculos", "Beurre de Cacahuète"]
 	elif cycle0.c == "2":
