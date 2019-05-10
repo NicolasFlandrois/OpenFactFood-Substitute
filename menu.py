@@ -9,18 +9,18 @@ class Menu:
 	#def __init__(self, question, *choices):
 	def __init__(self):	
 		self.c = 0
-		self.q = ["Veuillez choisir une catégorie: ",
+		self.q = ("Veuillez choisir une catégorie: ",
 		"veuillez choisir un produit : ",
 		"Voulez vous substituer ce produit? ", 
-		"Historique de substitution? "]
+		"Historique de substitution? ")
 		#Category menu's choices
-		self.c0 = ['pâte à tartiner', 'confiture', 'liquide']
+		self.c0 = ('pâte à tartiner', 'confiture', 'liquide')
 		#Products's choices
 		#c1's list will be define later depending on previous answer
 		#Sustitution's choices
-		self.c2 = ["Oui", "Non"]
+		self.c2 = ("Oui", "Non")
 		#Substitutes Historic's questions & choices
-		self.c3 = ["Oui", "Non"]
+		self.c3 = ("Oui", "Non")
 
 
 	def question(self, question, choices):
@@ -43,5 +43,5 @@ class Menu:
 					"Veuillez entrer un nombre entre 1 et " 
 					+ str(len(choices)) + "."
 					)
-		print("Vous avez choisit: " + choices[choice-1])
+		print("Vous avez choisi: " + choices[choice-1])
 		self.c = choice

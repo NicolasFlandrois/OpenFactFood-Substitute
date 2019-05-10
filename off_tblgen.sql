@@ -10,11 +10,10 @@ CREATE DATABASE openfoodfacts CHARACTER SET 'utf8';
 
 --Table 1
 CREATE TABLE Categories ( 
-    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     category VARCHAR(40) NOT NULL,
-    subcategory VARCHAR(40),
-    origin_ean SMALLINT NOT NULL,
-    substitute_ean SMALLINT NOT NULL,
+    origin_ean VARCHAR(13) NOT NULL,
+    substitute_ean VARCHAR(13) NOT NULL,
     PRIMARY KEY (id)
 ) 
 ENGINE=INNODB;
