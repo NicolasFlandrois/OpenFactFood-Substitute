@@ -1,3 +1,8 @@
+-- Date: Fri 10 May 2019 16:43:14 CEST 
+-- Author: Nicolas Flandrois
+-- This script will create the initial database for OpenFoodFacts Porject#5
+CREATE DATABASE openfoodfacts CHARACTER SET 'utf8';
+
 CREATE TABLE Categories ( 
     id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category VARCHAR(40) NOT NULL,
