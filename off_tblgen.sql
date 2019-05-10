@@ -2,6 +2,10 @@
 -- Author: Nicolas Flandrois
 -- This script will create the initial database for OpenFoodFacts Porject#5
 
+-- Personal note: How to make it happen? Execute from python? 
+-- How to import from csv and not take in account the headers?
+-- (erase after solving issue)
+
 CREATE DATABASE openfoodfacts CHARACTER SET 'utf8';
 
 --Table 1
