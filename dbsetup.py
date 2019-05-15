@@ -4,8 +4,10 @@
 # Author: Nicolas Flandrois
 
 import sqlalchemy as al
+from auth import Auth
+auth = Auth()
 
-engine = al.create_engine('mysql://xxxxxx', echo=True)
+engine = al.create_engine('mysql://'+auth.user+'@'auth.host, echo=True)
 #Add DB path here
 
 # def get_session(debug=False):
