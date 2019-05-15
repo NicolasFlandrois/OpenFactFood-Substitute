@@ -7,7 +7,7 @@ import sqlalchemy as al
 from auth import Auth
 auth = Auth()
 
-engine = al.create_engine('mysql://'+auth.user+'@'auth.host, echo=True)
+engine = al.create_engine('mysql://'+auth.user+'@'+auth.host+':'+auth.port, echo=True)
 #Add DB path here
 
 # def get_session(debug=False):
