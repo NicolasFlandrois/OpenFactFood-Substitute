@@ -1,12 +1,26 @@
 #!usr/bin/python3
 # UTF8
-# Date:  Wed 15 May 2019 16:58:49 CEST 
+# Date: Wed 15 May 2019 16:58:49 CEST 
 # Author: Nicolas Flandrois
 
 import sqlalchemy as al
 
 engine = al.create_engine('mysql://xxxxxx', echo=True)
 #Add DB path here
+
+# def get_session(debug=False):
+#     engine = create_engine('mysql://root:pw@IP/DB', echo=debug, encoding='utf8', pool_recycle=300, pool_pre_ping=True)
+#     Base.metadata.create_all(engine)
+#     Session = sessionmaker(bind=engine)
+#     session = Session()
+#     try:
+#         yield session
+#         session.commit()
+#     except:
+#         session.rollback()
+#         raise
+#     finally:
+#         session.close()
 
 class Product(Base):
  	"""docstring for Product"""
