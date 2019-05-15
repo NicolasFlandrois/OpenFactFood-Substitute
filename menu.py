@@ -21,10 +21,8 @@ class Menu:
 		self.c0 = ('pâte à tartiner', 'confiture', 'liquide')
 		#Products's choices
 		#c1's list will be define later depending on previous answer
-		#Sustitution's choices
+		#Sustitution & Historic's choices Yes/No
 		self.c2 = ("Oui", "Non")
-		#Substitutes Historic's questions & choices
-		self.c3 = ("Oui", "Non")
 
 
 	def question(self, question, choices):

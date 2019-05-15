@@ -7,8 +7,9 @@ import sqlalchemy as al
 from auth import Auth
 auth = Auth()
 
-engine = al.create_engine('mysql://'+auth.user+'@'+auth.host+':'+auth.port, echo=True)
-#Add DB path here
+engine = al.create_engine('mysql://'+auth.user+'@'+auth.host+'/off1:'+auth.port,
+echo=True) #need to select the database within mysql/mariadb and if not exist, create it during setup. 
+connection = engine.connect()
 
 # def get_session(debug=False):
 #     engine = create_engine('mysql://root:pw@IP/DB', echo=debug, encoding='utf8', pool_recycle=300, pool_pre_ping=True)
