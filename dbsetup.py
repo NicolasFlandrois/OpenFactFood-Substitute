@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!usr/bin/python3.5
 # UTF8
 # Date: Wed 15 May 2019 16:58:49 CEST 
 # Author: Nicolas Flandrois
@@ -8,7 +8,9 @@ from auth import Auth
 auth = Auth()
 
 engine = al.create_engine('mysql://'+auth.user+'@'+auth.host+'/off1:'+auth.port,
-echo=True) #need to select the database within mysql/mariadb and if not exist, create it during setup. 
+echo=True) 
+#need to select the database within mysql/mariadb and if not exist, 
+#create it during setup. 
 connection = engine.connect()
 
 # def get_session(debug=False):

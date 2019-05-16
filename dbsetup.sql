@@ -6,7 +6,7 @@
 -- How to import from csv and not take in account the headers?
 -- (erase after solving issue)
 
-CREATE DATABASE openfoodfacts CHARACTER SET 'utf8';
+CREATE DATABASE off1 CHARACTER SET 'UTF8';
 
 --Table 1
 CREATE TABLE Categories ( 
@@ -22,13 +22,13 @@ LOAD DATA LOCAL INFILE 'tbl1_cat.csv'
     INTO TABLE Categories
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\n'
-    (category, subcategory, origin_ean, substitute_ean);
+    (category, origin_ean, substitute_ean);
 
 --Table 2
 CREATE TABLE Products ( 
     id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    ean SMALLINT NOT NULL,
-    product_name VARCHAR(40),
+    ean VARCHAR(13) NOT NULL,
+    product_name TEXT,
     PRIMARY KEY (id)
 ) 
 ENGINE=INNODB;
@@ -42,9 +42,9 @@ LOAD DATA LOCAL INFILE 'tbl2_prod.csv'
 --Table 3
 CREATE TABLE History ( 
     id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    origin_ean SMALLINT NOT NULL,
-    substitute_ean SMALLINT NOT NULL,
-    status CHAR(1),
+    origin_ean VARCHAR(13) NOT NULL,
+    substitute_ean VARCHAR(13) NOT NULL,
+    substitute_status CHAR(1),
     date_change DATETIME NOT NULL,
     comments TEXT,
     PRIMARY KEY (id)
@@ -55,4 +55,4 @@ LOAD DATA LOCAL INFILE 'tbl3_historic.csv'
     INTO TABLE History
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\n'
-    (origin_ean, substitute_ean, status, date_change, comments);
+    (origin_ean, substitute_ean, substitute_status, date_change, comments);

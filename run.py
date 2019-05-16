@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!usr/bin/python3.5
 # UTF8
 # Date: Thu 09 May 2019 14:40:35 CEST 
 # Author: Nicolas Flandrois
@@ -7,21 +7,19 @@ from menu import Menu
 
 
 if __name__ == '__main__':
-	cycle0 = Menu()
-	cycle0.question(cycle0.q[0], cycle0.c0)
-
-	if cycle0.c == "1":
+	cycle = Menu()
+	#Question 0, category
+	cycle.question(cycle.q[0], cycle.c0)
+	#Define c1, sub-category's choices
+	if cycle.c == "1":
 		c1 = ("Noisette Cacao", "Speculos", "Beurre de Cacahuète")
-	elif cycle0.c == "2":
+	elif cycle.c == "2":
 		c1 = ("Confiture de Fraise", "Confiture d'Abricot", "Confiture d'Orange")
 	else:
 		c1 = ("Coulis de Fraise", "Miel", "Sirop d'érable")
-
-	cycle1 = Menu()
-	cycle1.question(cycle1.q[1], c1)
-
-	cycle2 = Menu()
-	cycle2.question(cycle2.q[2], cycle2.c2)
-
-	cycle3 = Menu()
-	cycle3.question(cycle3.q[3], cycle3.c2)
+	#Question 1, Product's choices
+	cycle.question(cycle.q[1], c1)
+	#Question 2, Substitution Y/N
+	cycle.question(cycle.q[2], cycle.c2)
+	#Question 3, view Historic Y/N
+	cycle.question(cycle.q[3], cycle.c2)
