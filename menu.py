@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!usr/bin/python3.5
 # UTF8
 # Date: Tue 07 May 2019 16:23:35 CEST 
 # Author: Nicolas Flandrois
@@ -18,7 +18,7 @@ class Menu:
 		"Voulez vous substituer ce produit? ", 
 		"Historique de substitution? ")
 		#Category menu's choices
-		self.c0 = ('pâte à tartiner', 'confiture', 'liquide')
+		self.c0 = ("pâte à tartiner", "confiture", "liquide")
 		#Products's choices
 		#c1's list will be define later depending on previous answer
 		#Sustitution & Historic's choices Yes/No
