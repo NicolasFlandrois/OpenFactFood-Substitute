@@ -10,17 +10,34 @@ auth = Auth()
 engine = al.create_engine('mysql+pymysql://' + auth.user + ':' + auth.password + '@' + auth.host + '/off1?host=localhost?port=3306', echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
 
 connection = engine.connect()
+metadata = al.MetaData()
 
-#test
-# base = connection.execute("SHOW Tables").fetchall()
-# print(base)
-#Attempt to read a specific table, then enumerate and append a list/tuple in python
-# select = al.select('category').select_from('Categories')
-# results = connection.execute(select).fetchall()
+products =  al.Table('Products', metadata,
+	al.Column('id', al.Integer, primary_key=True),
+	al.Column('ean', al.String),
+	al.Column('product_name', al.String),
+	)
+categories = al.Table('Categories', metadata,
+	al.Column('id', al.Integer, primary_key=True),
+	al.Column('category', al.String),
+	al.Column('origin_ean', al.String, al.ForeignKey('products.ean')),
+	al.Column('substitute_ean', al.String, al.ForeignKey('products.ean')),
+	)
+history =  al.Table('History', metadata,
+	al.Column('id', al.Integer, primary_key=True),
+	al.Column('origin_ean', al.String, al.ForeignKey('products.ean')),
+	al.Column('substitute_ean', al.String, al.ForeignKey('products.ean')),
+	al.Column('substitute_status', al.String),
+	al.Column('date_change', al.DateTime),
+	al.Column('comments', al.String),
+	)
+metadata.create_all(engine)
 
-for row in connection.execute(al.select([Categories, products])):
+s = al.sql.select([categories, products, history])
+results = connection.execute(s).fetchall()
+
+for row in results:
 	print(row)
-
 
 # class Product(Base):
 #  	"""docstring for Product"""
