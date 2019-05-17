@@ -33,11 +33,14 @@ history =  al.Table('History', metadata,
 	)
 metadata.create_all(engine)
 
-s = al.sql.select([categories, products, history])
-results = connection.execute(s).fetchall()
+select = al.sql.select([products])
+results = connection.execute(select).fetchall()
 
-for row in results:
-	print(row)
+type(results)
+# for row in results:
+# 	# print(row)
+# 	for i, ident, ean, prod in enumerate(row):
+# 		print("id: ", indent, ",", "ean: ", ean, ",", "nom: ", prod)
 
 # class Product(Base):
 #  	"""docstring for Product"""
