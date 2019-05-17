@@ -4,10 +4,17 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
+<<<<<<< HEAD
 
 engine = create_engine(
 	'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306', 
 	echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+=======
+from auth import Auth
+auth = Auth()
+
+engine = create_engine('mysql+pymysql://' + auth.user + ':' + auth.password + '@' + auth.host + '/off1?host=localhost?port=3306', echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+>>>>>>> master
 Session = sessionmaker(bind=engine)
 session = Session()
 
