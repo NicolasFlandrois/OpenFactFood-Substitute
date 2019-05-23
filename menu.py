@@ -3,9 +3,6 @@
 # Date: Tue 07 May 2019 16:23:35 CEST 
 # Author: Nicolas Flandrois
 
-from auth import Auth
-auth = Auth()
-
 class Menu:
 	"""This class defines the menu and questions 
 	to navigate through the script."""
