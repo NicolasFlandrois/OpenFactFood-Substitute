@@ -30,9 +30,3 @@ class Category(Base):
 	__tablename__ = "category"
 	id = Column(Integer, primary_key=True)
 	label = Column(String(50))
-
-#test lines
-pateatartiner = Category(label="pâte à tartiner")
-session.add(pateatartiner)
-confiture = Category(label="confiture")
-sirop = Category(label="sirop")
