@@ -4,7 +4,7 @@
 # Author: Nicolas Flandrois
 
 from sqlalchemy import Column, Integer, String, Boolean, Table 
-from sqlalchemy import create_engine, MetaData, ForeignKey 
+from sqlalchemy import create_engine, MetaData, ForeignKey, update 
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy_utils import create_database, database_exists 
@@ -70,4 +70,5 @@ prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
 
 for index, (ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, product_name=name, 
-            category=category, substitute=substitute, substituted=substituted)
+            category=category, substituted=substituted)
+        update(product).where(product.c.id==index).values(substitute=substitute)
