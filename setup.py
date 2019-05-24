@@ -49,28 +49,25 @@ categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
     engine.execute(category.insert(), label=i)
 
-prods = [    
-    ("3017620429484","Nutella - Ferrero - 825 g",1,2,False),
-    ("3560070472888","Pâte à tartiner - Carrefour Bio - 350 g",1,1,True),
-    ("5410126006957","The original speculoos - Lotus - 400 g",1,4,False),
-    ("3700774300487","Pâte à tartiner Speculos - Speculoos ",1,3,True),
-    ("3760091721747","Beurre de cacahuètes - Ethiquable - 350 g",1,6, False),
-    ("8710795630918","peanut butter - Jack Klijn - 350 gr",1,5,True,
-    ("3045320001525","Confiture Extra Fraises - Bonne Maman - 370 g",2,8, False),
-    ("3245390163868","Confiture extra de fraises du Perigord - Reflets de France",2,7,True),
-    ("3608580750031","Confiture à L\'Abricot Fruitée Intense - Bonne Maman - 340 g",2,10,False),
-    ("3245390034830","Confiture d\'abricots du Roussillon - Reflets de France - 325 g",2,9,True),
-    ("3045320001648","Confiture orange en tranches - Bonne Maman - 370 g",2,12,False),
-    ("3245390060709","Confiture d\'oranges et de clémentines de Corse - Reflets de France - 325 g",2,11,True),
-    ("2001111060035","Coulis de fraises cuit à la marmite - Atelier Des Gouts Sucres",3,14,False),
-    ("3228170819506","Coulis Fraises Ponthier - 1 Kg",3,13,True),
-    ("3088542500278","Pur Sirop d\'érable - Maple joe - 250 g",3,16,False),
-    ("0815126002179","Sirop D\'érable 250g Pur 100% Origine Canada - Nokomis - 250 g",3,15,True),
-    ("3088545004001","Miel de fleurs - Lune de Miel - 500 g",3,18,False),
-    ("3088540202860","Miel l\'Apiculteur : Poitou-Charente"," Le Pot 500G - 500 g",3,17,True)
-    ]
+prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
+    ("3560070472888", "Pâte à tartiner - Carrefour Bio - 350 g", 1, 1, True),
+    ("5410126006957", "The original speculoos - Lotus - 400 g", 1, 4, False),
+    ("3700774300487", "Pâte à tartiner Speculos - Speculoos ", 1, 3, True),
+    ("3760091721747", "Beurre de cacahuètes - Ethiquable - 350 g", 1, 6, False),
+    ("8710795630918", "peanut butter - Jack Klijn - 350 gr", 1, 5, True),
+    ("3045320001525", "Confiture Extra Fraises - Bonne Maman - 370 g", 2, 8, False),
+    ("3245390163868", "Confiture extra de fraises du Perigord - Reflets de France", 2, 7, True),
+    ("3608580750031", "Confiture à L\'Abricot Fruitée Intense - Bonne Maman - 340 g", 2, 10, False),
+    ("3245390034830", "Confiture d\'abricots du Roussillon - Reflets de France - 325 g", 2, 9, True),
+    ("3045320001648", "Confiture orange en tranches - Bonne Maman - 370 g", 2, 12, False),
+    ("3245390060709", "Confiture d\'oranges et de clémentines de Corse - Reflets de France - 325 g", 2, 11, True),
+    ("2001111060035", "Coulis de fraises cuit à la marmite - Atelier Des Gouts Sucres", 3, 14, False),
+    ("3228170819506", "Coulis Fraises Ponthier - 1 Kg", 3, 13, True),
+    ("3088542500278", "Pur Sirop d\'érable - Maple joe - 250 g", 3, 16, False),
+    ("0815126002179", "Sirop D\'érable 250g Pur 100% Origine Canada - Nokomis - 250 g", 3, 15, True),
+    ("3088545004001", "Miel de fleurs - Lune de Miel - 500 g", 3, 18, False),
+    ("3088540202860", "Miel l\'Apiculteur : Poitou-Charente"," Le Pot 500G - 500 g", 3, 17, True)]
 
-#To insert data in product's table I think I should create a similar for loop as 
-#in category, using command "engine.execute(category.insert(), label=i)"
-#enumerate or for loop?
-#How to import my csv string into tuples, with the right set?
+for index, (ean, name, category, substitute, substituted) in enumerate(prods):
+        engine.execute(product.insert(), ean=ean, product_name=name, 
+            category=category, substitute=substitute, substituted=substituted)
