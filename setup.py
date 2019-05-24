@@ -50,9 +50,11 @@ for i in categories:
     engine.execute(category.insert(), label=i)
 
 engine.execute("""
-    LOAD DATA LOCAL INFILE 'products.csv'
+    LOAD DATA INFILE './products.csv'
     INTO TABLE product
-    FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+    CHARACTER SET 'utf8'
+    FIELDS TERMINATED BY ',' 
+    ENCLOSED BY '"'
     LINES TERMINATED BY '\\n'
     (ean, product_name, category, substitute, substituted);
     """).execution_options(autocommit=True) #Test non conclusive
