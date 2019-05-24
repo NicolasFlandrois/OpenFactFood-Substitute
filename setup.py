@@ -3,12 +3,14 @@
 # Date: Thu 09 May 2019 14:40:35 CEST 
 # Author: Nicolas Flandrois
 
+import sqlalchemy as al
 from sqlalchemy import Column, Integer, String, Boolean, Table 
 from sqlalchemy import create_engine, MetaData, ForeignKey 
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy_utils import create_database, database_exists 
-from numpy import genfromtxt 
+import csv
+# from numpy import genfromtxt 
 
 from models import Product, Category
 
@@ -53,31 +55,45 @@ for i in categories:
 #Products' data import isn't working this way, should make it more simple
 #Extracting data from csv with python, feeding a list of tuples
 #The enumerate() or for loop to feed the Table's DB
-def Load_Data(file_name):
-    data = genfromtxt(file_name, delimiter=',',  
-        converters={0: lambda s: str(s)})
-    return data.tolist()
 
-session = sessionmaker()
-session.configure(bind=engine)
-s = session()
+# with open('products.csv') as csvfile:
+#     prod = [n for n in csvfile.read().replace(",", "").replace("\n", "")]
 
-try:
-    file_name = "products.csv"
-    data = Load_Data(file_name) 
+# print(prod)
 
-    for i in data:
-        record = product(**{
-            'ean' : i[0],
-            'product_name' : i[1],
-            'category' : i[2],
-            'substitute' : i[3],
-            'substituted' : i[4]
-        })
-        s.add(record) #Add all the records
+engine.execute("""
+    LOAD DATA LOCAL INFILE 'products.csv'
+    INTO TABLE product
+    FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+    LINES TERMINATED BY '\\n'
+    (ean, product_name, category, substitute, substituted);
+    """)
 
-    s.commit() #Attempt to commit all the records
-except:
-    s.rollback() #Rollback the changes on error
-finally:
-    s.close() #Close the connection
+# def Load_Data(file_name):
+#     data = genfromtxt(file_name, delimiter=',',  
+#         converters={0: lambda s: str(s)})
+#     return data.tolist()
+
+# session = sessionmaker()
+# session.configure(bind=engine)
+# s = session()
+
+# try:
+#     file_name = "products.csv"
+#     data = Load_Data(file_name) 
+
+#     for i in data:
+#         record = product(**{
+#             'ean' : i[0],
+#             'product_name' : i[1],
+#             'category' : i[2],
+#             'substitute' : i[3],
+#             'substituted' : i[4]
+#         })
+#         s.add(record) #Add all the records
+
+#     s.commit() #Attempt to commit all the records
+# except:
+#     s.rollback() #Rollback the changes on error
+# finally:
+#     s.close() #Close the connection
