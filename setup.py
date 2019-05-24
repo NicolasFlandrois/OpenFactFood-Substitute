@@ -71,4 +71,14 @@ prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
 for index, (ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, product_name=name, 
             category=category, substituted=substituted)
-        update(product).where(product.c.id==index).values(substitute=substitute)
+
+#Clean + English
+products = session.query(Product).all()
+for n in range(0, len(products), 2):
+    produit = products[n]
+    sub = products[n+1]
+    produit.substitute = sub.id
+    sub.substitute = produit.id
+    
+session.commit()
+#Clean + English
