@@ -2,6 +2,7 @@
 # UTF8
 # Date: Thu 09 May 2019 14:40:35 CEST 
 # Author: Nicolas Flandrois
+#NB replaced by control.py
 
 from menu import Menu
 
