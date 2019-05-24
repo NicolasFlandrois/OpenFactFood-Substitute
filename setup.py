@@ -44,13 +44,7 @@ category = Table(
 metadata.create_all(engine)
 
 #4/ Fill in info to db according to tbls
-Session = sessionmaker(bind=engine)
-session = Session()
 
-# pateatartiner = Category(label="pâte à tartiner")
-# session.add(pateatartiner)
-# confiture = Category(label="confiture")
-# sirop = Category(label="sirop")
 categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
 	engine.execute(category.insert(), label=i)
