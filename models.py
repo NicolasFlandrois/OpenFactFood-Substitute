@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, create_engine, MetaData
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
@@ -30,7 +31,7 @@ class Category(Base):
 	id = Column(Integer, primary_key=True)
 	label = Column(String(50))
 
-
+#test lines
 pateatartiner = Category(label="pâte à tartiner")
 session.add(pateatartiner)
 confiture = Category(label="confiture")
