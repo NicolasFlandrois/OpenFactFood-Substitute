@@ -55,4 +55,9 @@ engine.execute("""
     FIELDS TERMINATED BY ',' ENCLOSED BY '"'
     LINES TERMINATED BY '\\n'
     (ean, product_name, category, substitute, substituted);
-    """).execution_options(autocommit=True)
+    """).execution_options(autocommit=True) #Test non conclusive
+
+#To insert data in product's table I think I should create a similar for loop as 
+#in category, using command "engine.execute(category.insert(), label=i)"
+#enumerate or for loop?
+#How to import my csv string into tuples, with the right set?
