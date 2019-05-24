@@ -50,6 +50,9 @@ categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
     engine.execute(category.insert(), label=i)
 
+#Products' data import isn't working this way, should make it more simple
+#Extracting data from csv with python, feeding a list of tuples
+#The enumerate() or for loop to feed the Table's DB
 def Load_Data(file_name):
     data = genfromtxt(file_name, delimiter=',',  
         converters={0: lambda s: str(s)})
