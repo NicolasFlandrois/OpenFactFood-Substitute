@@ -19,7 +19,7 @@ class Product(Base):
 	"""docstring for Products"""
 	__tablename__ = "product"
 	id = Column(Integer, primary_key=True)
-	ean = Column(String(13))
+	ean = Column(String(13), nullable=False)
 	product_name = Column(String(50))
 	category = Column(Integer, ForeignKey('category.id'))
 	substitute = Column(Integer, ForeignKey('product.id'))
