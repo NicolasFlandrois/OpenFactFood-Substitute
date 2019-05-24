@@ -21,11 +21,9 @@ engine = create_engine(
 	'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306', 
 	echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
 
-Session = sessionmaker(bind=engine) #not in use yet
-session = Session() #not in use yet
-metadata = MetaData()
-
 #3/ Create tables in DB, named: category & product
+metadata = MetaData(engine)
+
 product = Table(
 	'product', metadata,
 	Column('id', Integer, primary_key=True),
@@ -46,3 +44,13 @@ category = Table(
 metadata.create_all(engine)
 
 #4/ Fill in info to db according to tbls
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# pateatartiner = Category(label="pâte à tartiner")
+# session.add(pateatartiner)
+# confiture = Category(label="confiture")
+# sirop = Category(label="sirop")
+categories = ("pâte à tartiner", "confiture", "sirop")
+for i in categories:
+	engine.execute(category.insert(), label=i)
