@@ -38,3 +38,5 @@ class Category(Base):
 	__tablename__ = "category"
 	id = Column(Integer, primary_key=True)
 	label = Column(String(50))
+
+#Verification ALL English!

@@ -25,3 +25,5 @@ if __name__ == '__main__':
 	cycle.question(cycle.q[2], cycle.c2)
 	#Question 3, view Historic Y/N
 	cycle.question(cycle.q[3], cycle.c2)
+
+#Verification ALL English!

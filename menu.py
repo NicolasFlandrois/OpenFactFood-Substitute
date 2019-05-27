@@ -44,3 +44,5 @@ class Menu:
 					)
 		print("Vous avez choisi: " + choices[choice-1])
 		self.c = choice
+
+#Verification ALL English!
