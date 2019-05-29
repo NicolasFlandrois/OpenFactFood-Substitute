@@ -12,7 +12,8 @@ category = Category
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
-	# établire en methode statique (Statelass static avec parametre (pas de variables)) les fonction:
+	# établire en methode statique (Statelass static avec parametre 
+	#(pas de variables)) les fonction:
 	# def __init__(self, arg):
 	# 	super(View, self).__init__()
 	# 	self.arg = arg
