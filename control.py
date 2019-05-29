@@ -3,7 +3,7 @@
 # Date: Thu 09 May 2019 14:40:35 CEST 
 # Author: Nicolas Flandrois
 
-from menu import Menu
+from menu import Menu #Change the import from view
 from models import Product, Category
 from view import View
 
@@ -11,7 +11,7 @@ from view import View
 if __name__ == '__main__':
 	cycle = Menu()
 	#Question 0, category
-	cycle.question(cycle.q[0], cycle.c0)
+	cycle.question(cycle.q[0], cycle.c0) #Modify from view
 	#Define c1, sub-category's choices
 	if cycle.c == "1":
 		c1 = ("Noisette Cacao", "Speculos", "Beurre de Cacahuète")
