@@ -4,7 +4,7 @@
 # Author: Nicolas Flandrois
 
 from menu import Menu
-from madels import Models
+from models import Product, Category
 from view import View
 
 
