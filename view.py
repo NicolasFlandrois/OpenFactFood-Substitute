@@ -12,37 +12,31 @@ class View(object):
 	"""Views to display various infos needed through software's cicles."""
 	# établire en methode statique (Statelass static avec parametre 
 	#(pas de variables)) les fonction:
-	menu = Menu
-	product = Product
-	category = Category
-
+	
 	def v_categories(self):
 		"""View of all categories."""
 		#Import categories from database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
 		print(category)
 
-	def v_products(self, category):
+	def v_products(self, category_id):
 		"""View of all products within a category."""
 		#Import products list form database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
 		pass
 
-	def product_sheet(self, product):
+	def product_sheet(self, product_id):
 		"""View of a specific product's ID and informations. Product sheet."""
-		print(product)
+		print(product_id)
 		
 
-	def prod_sub(self, product):
-		"""View of coresponding product and it's substitute."""
-		#Import prod & Sub from Database &/or Models
-		#Use repr or STR from Model, to display info in a specific display
-		print("""Original product: {}
-			Is this product corrently substituted? {}
-			It's substitute is {}
-			"""
-			).format(
-			product.product_name, product.substituted, product.substitute)
+	def prod_sub(self, product_id):
+		"""View of coresponding product and it's substitute.""" 
+		product = product_id
+		print("Original product: {} \n \
+			Is this product corrently substituted? {} \n \
+			It's substitute is {}".format(product.product_name, 
+			product.substituted, product.substitute))
 
 	def v_menu(self, question, choices):
 		"""View of the menu."""
@@ -81,3 +75,12 @@ class View(object):
 		self.c = choice
 
 # Translate ALL in english!
+
+#TEST LINES
+view = View
+menu = Menu
+product = Product
+category = Category
+# print(view.v_categories())
+print(view.product_sheet(6, 3))
+print(view.prod_sub(2, 1))
