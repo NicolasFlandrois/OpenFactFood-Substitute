@@ -16,7 +16,7 @@ if not database_exists("mysql+pymysql://odin:lincoln@localhost/off1"):
     create_database("mysql+pymysql://odin:lincoln@localhost/off1")
 
 #2/connect to database: off1
-#Base = declarative_base() #Not usefull here
+Base = declarative_base()
 engine = create_engine(
     'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306', 
     echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
@@ -81,17 +81,22 @@ for index, (ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, product_name=name, 
             category=category, substituted=substituted)
 
-products = session.query(Product).all()
+Session = sessionmaker(bind=engine)
+session = Session()
+
+products = session.query(Product(Base)).all()
 for n in range(0, len(products), 2):
     prod = products[n]
     sub = products[n+1]
     prod.substitute = sub.id
-    sub.substitute = produit.id
+    sub.substitute = prod.id
+
+session.commit()
+#NB: ISSUE with this last command, the DB don't commit the update.
+    
 #NB ATTENTION: Improvement to provide here, for further development: 
 #here the databae's seed is made in a way, that the substitute follows the 
 #product. There for substitute is define by 1 out of 2. 
 #However if data seeding is organised differently, 
 #this script wouldn't work out. Something more automatic, more 
 #systematic, and accurate should be developped.
-
-session.commit()
