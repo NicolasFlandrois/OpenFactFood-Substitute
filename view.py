@@ -6,41 +6,43 @@
 import sqlalchemy as al
 from menu import Menu
 from models import Product, Category
-menu = Menu
-product = Product
-category = Category
+
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
 	# établire en methode statique (Statelass static avec parametre 
 	#(pas de variables)) les fonction:
-	# def __init__(self, arg):
-	# 	super(View, self).__init__()
-	# 	self.arg = arg
+	menu = Menu
+	product = Product
+	category = Category
 
-	def v_category(self):
+	def v_categories(self):
 		"""View of all categories."""
 		#Import categories from database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
-		pass
+		print(category)
 
-	def v_product(self):
+	def v_products(self, category):
 		"""View of all products within a category."""
 		#Import products list form database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
 		pass
 
-	def product_card(self):
+	def product_sheet(self, product):
 		"""View of a specific product's ID and informations. Product sheet."""
-		#Import product's sheet from database &/or Models
-		#Use repr or STR from Model, to display info in a specific display
-		pass
+		print(product)
+		
 
-	def prod_sub(self):
+	def prod_sub(self, product):
 		"""View of coresponding product and it's substitute."""
 		#Import prod & Sub from Database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
-		pass
+		print("""Original product: {}
+			Is this product corrently substituted? {}
+			It's substitute is {}
+			"""
+			).format(
+			product.product_name, product.substituted, product.substitute)
 
 	def v_menu(self, question, choices):
 		"""View of the menu."""

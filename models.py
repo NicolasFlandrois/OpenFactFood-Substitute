@@ -29,14 +29,21 @@ class Product(Base):
 	category = Column(Integer, ForeignKey('category.id'))
 	substitute = Column(Integer, ForeignKey('product.id'))
 	substituted = Column(Boolean)
-	def __repr__(self):
-		return str((self.id, self.ean, self.product_name, self.category, 
-			self.substitute, self.substituted))
+
+	def __str__(self):
+		return f"""The product selected is: {self.product_name}.
+		It's EAN-13 barcode is: {self.ean}.
+		It's product of substitution is {self.substitute}.
+		Is this product currently substituted? {self.substituted}
+		"""
 	
 class Category(Base):
 	"""docstring for Categories"""
 	__tablename__ = "category"
 	id = Column(Integer, primary_key=True)
 	label = Column(String(50))
+	
+	def __repr__(self):
+		return str((self.label))
 
 #Verification ALL English!
