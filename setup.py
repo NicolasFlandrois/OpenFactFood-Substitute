@@ -43,7 +43,7 @@ category = Table(
 #5/ creat all tables
 metadata.create_all(engine)
 
-#4/ Fill in info to db according to tbls
+#4/ Fill in info to database according to tables, with seed data.
 
 categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
@@ -81,15 +81,17 @@ for index, (ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, product_name=name, 
             category=category, substituted=substituted)
 
-#Clean + English
 products = session.query(Product).all()
 for n in range(0, len(products), 2):
     prod = products[n]
     sub = products[n+1]
     prod.substitute = sub.id
     sub.substitute = produit.id
-    
-session.commit()
-#Clean + English
+#NB ATTENTION: Improvement to provide here, for further development: 
+#here the databae's seed is made in a way, that the substitute follows the 
+#product. There for substitute is define by 1 out of 2. 
+#However if data seeding is organised differently, 
+#this script wouldn't work out. Something more automatic, more 
+#systematic, and accurate should be developped.
 
-#Verification ALL English!
+session.commit()
