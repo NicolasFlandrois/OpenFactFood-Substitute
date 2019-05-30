@@ -4,9 +4,9 @@
 # Author: Nicolas Flandrois
 
 from sqlalchemy import Column, Integer, String, Boolean, Table 
-from sqlalchemy import create_engine, MetaData, ForeignKey, update 
+from sqlalchemy import create_engine, MetaData, ForeignKey 
 from sqlalchemy.ext.declarative import declarative_base 
-from sqlalchemy.orm import sessionmaker 
+from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy_utils import create_database, database_exists 
 
 from models import Product, Category
@@ -84,7 +84,7 @@ for index, (ean, name, category, substitute, substituted) in enumerate(prods):
 Session = sessionmaker(bind=engine)
 session = Session()
 
-products = session.query(Product(Base)).all()
+products = session.query(Product).all()
 for n in range(0, len(products), 2):
     prod = products[n]
     sub = products[n+1]
