@@ -45,5 +45,3 @@ class Category(Base):
 	
 	def __repr__(self):
 		return str((self.label))
-
-#Verification ALL English!

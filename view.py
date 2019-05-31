@@ -4,41 +4,58 @@
 # Author: Nicolas Flandrois
 
 import sqlalchemy as al
+from sqlalchemy.orm import sessionmaker, query
+from sqlalchemy import create_engine
 from menu import Menu
 from models import Product, Category
 
+engine = create_engine(
+	'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306', 
+	echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+product = Product
+category = Category
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
-	# établire en methode statique (Statelass static avec parametre 
+	# établire en methode statique (Stateless static avec parametre 
 	#(pas de variables)) les fonction:
 	
-	def v_categories(self):
+	@staticmethod	
+	def categories_list():
 		"""View of all categories."""
 		#Import categories from database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
+		categories_list = session.query(category)
 		print(category)
 
-	def v_products(self, category_id):
+	@staticmethod
+	def products_list(choice):
 		"""View of all products within a category."""
 		#Import products list form database &/or Models
 		#Use repr or STR from Model, to display info in a specific display
-		pass
+		products_list = session.query(product).filter(
+			product.category == choice)
+		print(products_list)
 
-	def product_sheet(self, product_id):
+	@staticmethod
+	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
-		print(product_id)
 		
-
-	def prod_sub(self, product_id):
+	@staticmethod
+	def prod_sub(choice):
 		"""View of coresponding product and it's substitute.""" 
-		product = product_id
+		#xxxdefine choice
 		print("Original product: {} \n \
 			Is this product corrently substituted? {} \n \
 			It's substitute is {}".format(product.product_name, 
 			product.substituted, product.substitute))
 
-	def v_menu(self, question, choices):
+	@staticmethod
+	def v_menu(question, choices):
 		"""View of the menu."""
 		#Import choices from v_category and v_product
 		# • view menu
@@ -72,15 +89,10 @@ class View(object):
 					+ str(len(choices)) + "."
 					)
 		print("Vous avez choisi: " + choices[choice-1])
-		self.c = choice
+		return choice
 
 # Translate ALL in english!
 
 #TEST LINES
-view = View
-menu = Menu
-product = Product
-category = Category
-# print(view.v_categories())
-print(view.product_sheet(6, 3))
-print(view.prod_sub(2, 1))
+view = View()
+print(view.categories_list())
