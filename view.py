@@ -21,38 +21,37 @@ category = Category
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
-	# établire en methode statique (Stateless static avec parametre 
-	#(pas de variables)) les fonction:
 	
 	@staticmethod	
 	def categories_list():
 		"""View of all categories."""
-		#Import categories from database &/or Models
-		#Use repr or STR from Model, to display info in a specific display
-		categories_list = session.query(category)
-		print(category)
+		return session.query(category)
+		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
 
 	@staticmethod
 	def products_list(choice):
 		"""View of all products within a category."""
-		#Import products list form database &/or Models
-		#Use repr or STR from Model, to display info in a specific display
-		products_list = session.query(product).filter(
+		return session.query(product).filter(
 			product.category == choice)
-		print(products_list)
-
+		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
+	
 	@staticmethod
 	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
+		return session.query(product).filter(
+			product.id == choice).__str__
+		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
 		
 	@staticmethod
 	def prod_sub(choice):
 		"""View of coresponding product and it's substitute.""" 
-		#xxxdefine choice
+		session.query(product).filter(
+			product.id == choice)
 		print("Original product: {} \n \
 			Is this product corrently substituted? {} \n \
 			It's substitute is {}".format(product.product_name, 
 			product.substituted, product.substitute))
+		#issue Shows the print static text, but not the data form DB. Possibly issue comes from DB connexion
 
 	@staticmethod
 	def v_menu(question, choices):
@@ -95,4 +94,7 @@ class View(object):
 
 #TEST LINES
 view = View()
-print(view.categories_list())
+view.categories_list() #issue Doesn't show anything
+view.products_list(2) #issue Doesn't show anything
+view.product_sheet(7) #issue Doesn't show anything
+view.prod_sub(8) #issue Shows the print static text, but not the data form DB
