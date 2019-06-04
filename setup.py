@@ -40,62 +40,75 @@ category = Table(
     Column('label', String(50)),
     )
 
-#5/ creat all tables
-metadata.create_all(engine)
+# #5/ creat all tables
+# metadata.create_all(engine)
 
-#4/ Fill in info to database according to tables, with seed data.
+# #4/ Fill in info to database according to tables, with seed data.
 
-categories = ("pâte à tartiner", "confiture", "sirop")
-for i in categories:
-    engine.execute(category.insert(), label=i)
+# categories = ("pâte à tartiner", "confiture", "sirop")
+# for i in categories:
+#     engine.execute(category.insert(), label=i)
 
-prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
-    ("3560070472888", "Pâte à tartiner - Carrefour Bio - 350 g", 1, 1, True),
-    ("5410126006957", "The original speculoos - Lotus - 400 g", 1, 4, False),
-    ("3700774300487", "Pâte à tartiner Speculos - Speculoos ", 1, 3, True),
-    ("3760091721747", "Beurre de cacahuètes - Ethiquable - 350 g", 1, 6, False),
-    ("8710795630918", "peanut butter - Jack Klijn - 350 gr", 1, 5, True),
-    ("3045320001525", "Confiture Extra Fraises - Bonne Maman - 370 g", 2, 8, \
-        False),
-    ("3245390163868", "Confiture extra de fraises du Perigord - \
-Reflets de France", 2, 7, True),
-    ("3608580750031", "Confiture à L\'Abricot Fruitée Intense - Bonne Maman - \
-340 g", 2, 10, False),
-    ("3245390034830", "Confiture d\'abricots du Roussillon - Reflets de France \
-- 325 g", 2, 9, True),
-    ("3045320001648", "Confiture orange en tranches - Bonne Maman - 370 g", 2, \
-        12, False),
-    ("3245390060709", "Confiture d\'oranges et de clémentines de Corse - \
-Reflets de France - 325 g", 2, 11, True),
-    ("2001111060035", "Coulis de fraises cuit à la marmite - Atelier Des Gouts \
-Sucres", 3, 14, False),
-    ("3228170819506", "Coulis Fraises Ponthier - 1 Kg", 3, 13, True),
-    ("3088542500278", "Pur Sirop d\'érable - Maple joe - 250 g", 3, 16, False),
-    ("0815126002179", "Sirop D\'érable 250g Pur 100% Origine Canada - Nokomis \
-- 250 g", 3, 15, True),
-    ("3088545004001", "Miel de fleurs - Lune de Miel - 500 g", 3, 18, False),
-    ("3088540202860", "Miel l\'Apiculteur : Poitou-Charente"," Le Pot 500G \
-- 500 g", 3, 17, True)]
+# prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
+#     ("3560070472888", "Pâte à tartiner - Carrefour Bio - 350 g", 1, 1, True),
+#     ("5410126006957", "The original speculoos - Lotus - 400 g", 1, 4, False),
+#     ("3700774300487", "Pâte à tartiner Speculos - Speculoos ", 1, 3, True),
+#     ("3760091721747", "Beurre de cacahuètes - Ethiquable - 350 g", 1, 6, False),
+#     ("8710795630918", "peanut butter - Jack Klijn - 350 gr", 1, 5, True),
+#     ("3045320001525", "Confiture Extra Fraises - Bonne Maman - 370 g", 2, 8, \
+#         False),
+#     ("3245390163868", "Confiture extra de fraises du Perigord - \
+# Reflets de France", 2, 7, True),
+#     ("3608580750031", "Confiture à L\'Abricot Fruitée Intense - Bonne Maman - \
+# 340 g", 2, 10, False),
+#     ("3245390034830", "Confiture d\'abricots du Roussillon - Reflets de France \
+# - 325 g", 2, 9, True),
+#     ("3045320001648", "Confiture orange en tranches - Bonne Maman - 370 g", 2, \
+#         12, False),
+#     ("3245390060709", "Confiture d\'oranges et de clémentines de Corse - \
+# Reflets de France - 325 g", 2, 11, True),
+#     ("2001111060035", "Coulis de fraises cuit à la marmite - Atelier Des Gouts \
+# Sucres", 3, 14, False),
+#     ("3228170819506", "Coulis Fraises Ponthier - 1 Kg", 3, 13, True),
+#     ("3088542500278", "Pur Sirop d\'érable - Maple joe - 250 g", 3, 16, False),
+#     ("0815126002179", "Sirop D\'érable 250g Pur 100% Origine Canada - Nokomis \
+# - 250 g", 3, 15, True),
+#     ("3088545004001", "Miel de fleurs - Lune de Miel - 500 g", 3, 18, False),
+#     ("3088540202860", "Miel l\'Apiculteur : Poitou-Charente"," Le Pot 500G \
+# - 500 g", 3, 17, True)]
 
-for index, (ean, name, category, substitute, substituted) in enumerate(prods):
-        engine.execute(product.insert(), ean=ean, product_name=name, 
-            category=category, substituted=substituted)
+# for index, (ean, name, category, substitute, substituted) in enumerate(prods):
+#         engine.execute(product.insert(), ean=ean, product_name=name, 
+#             category=category, substituted=substituted)
+#Investigation ISSUE: this engine.execute(product.insert) for loop doesn't insert this product 
+#succesfully 3088540202860, last item on the list. WHY? HOW?
+# And return following error:
+# 2019-06-04 16:56:25,386 INFO sqlalchemy.engine.base.Engine COMMIT
+# Traceback (most recent call last):
+#   File "/media/odin/RAGNAROCK_BACKUP/OFFood/setup.py", line 80, in <module>
+#     for index, (ean, name, category, substitute, substituted) in enumerate(prods):
+# ValueError: too many values to unpack (expected 5)
+#The script cannot persue the next commands then. So it's not an issue it cannot update, but an issue it cannot continue.
 
 # create a configured "Session" class
 Session = sessionmaker(bind=engine)
 # create a Session
 session = Session()
 
-# product = Product()
-products = session.query(product)
-query = products.all()
-for n in range(0, len(query), 2):
+
+products = session.query(product).all()
+print(products) #Test, ok this works out
+for n in range(0, len(products), 2):
     prod = products[n]
     sub = products[n+1]
     prod.substitute = sub.id
     sub.substitute = prod.id
     session.commit()
 #NB: ISSUE with this last command, the DB don't commit the update.
+#Traceback (most recent call last):
+#   File "/media/odin/RAGNAROCK_BACKUP/OFFood/setup.py", line 104, in <module>
+#     prod.substitute = sub.id
+# AttributeError: can't set attribute
     
 #NB ATTENTION: Improvement to provide here, for further development: 
 #here the databae's seed is made in a way, that the substitute follows the 
