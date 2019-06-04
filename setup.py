@@ -96,7 +96,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-products = session.query(product).all()
+products = session.query(Product).all()
 print(products) #Test, ok this works out
 for n in range(0, len(products), 2):
     prod = products[n]
