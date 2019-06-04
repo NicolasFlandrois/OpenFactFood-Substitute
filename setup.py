@@ -88,6 +88,7 @@ category = Table(
 #   File "/media/odin/RAGNAROCK_BACKUP/OFFood/setup.py", line 80, in <module>
 #     for index, (ean, name, category, substitute, substituted) in enumerate(prods):
 # ValueError: too many values to unpack (expected 5)
+#https://stackoverflow.com/questions/48390207/sql-alchemy-valueerror-too-many-values-to-unpack
 #The script cannot persue the next commands then. So it's not an issue it cannot update, but an issue it cannot continue.
 
 # create a configured "Session" class
