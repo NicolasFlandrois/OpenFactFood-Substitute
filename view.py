@@ -16,58 +16,56 @@ engine = create_engine(
 Session = sessionmaker(bind=engine)
 session = Session()
 
-product = Product
-category = Category
+# product = Product
+# category = Category
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
 	
+	choice = 0
+	question = ("Veuillez choisir une catégorie: ",
+	"veuillez choisir un produit : ",
+	"Voulez vous substituer ce produit? ", 
+	"Historique de substitution? ")
+	#Sustitution & Historic's choices Yes/No
+	YesNo = ("Oui", "Non")
+
 	@staticmethod	
 	def categories_list():
 		"""View of all categories."""
-		return session.query(category)
-		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
+		category_list = session.query(Category).all()
+		menu(question[0], categories_list)
+		#use menu to display
 
 	@staticmethod
 	def products_list(choice):
 		"""View of all products within a category."""
-		return session.query(product).filter(
+		product_list = session.query(Product).filter(
 			product.category == choice)
-		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
+		print(product_list)
 	
 	@staticmethod
 	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
-		return session.query(product).filter(
+		prod_sheet = session.query(Product).filter(
 			product.id == choice).__str__
-		#issue from test Doesn't show anything. Possibly issue comes from DB connexion
+		print(prod_sheet)
 		
 	@staticmethod
 	def prod_sub(choice):
 		"""View of coresponding product and it's substitute.""" 
-		session.query(product).filter(
-			product.id == choice)
+		# product = session.query(Product).filter(
+		# 	Product.id == choice)
+		product = session.query(Product).all().filter(
+			Product.id == choice)
 		print("Original product: {} \n \
 			Is this product corrently substituted? {} \n \
 			It's substitute is {}".format(product.product_name, 
 			product.substituted, product.substitute))
-		#issue Shows the print static text, but not the data form DB. Possibly issue comes from DB connexion
-
+		
 	@staticmethod
-	def v_menu(question, choices):
-		"""View of the menu."""
-		#Import choices from v_category and v_product
-		# • view menu
-		#    ◇ reprendre ce qui a été fait dans fichier menu
-		#    ◇ faire 1 view par menu
-		#    ◇ vue bloquante > attends une réponce
-		#       ▪ affichage
-		#       ▪ input
-		#       ▪ output
-		#    ◇ stateless
-		#       ▪ static
-		#       ▪ param
-		#       ▪ (pas de variables en param)
+	def menu(question, choices):
+
 		choice = None
 
 		print(question)
@@ -94,7 +92,7 @@ class View(object):
 
 #TEST LINES
 view = View()
-view.categories_list() #issue Doesn't show anything
-view.products_list(2) #issue Doesn't show anything
-view.product_sheet(7) #issue Doesn't show anything
+# view.categories_list() #issue Doesn't show anything
+# view.products_list(2) #issue Doesn't show anything
+# view.product_sheet(7) #issue Doesn't show anything
 view.prod_sub(8) #issue Shows the print static text, but not the data form DB
