@@ -30,8 +30,32 @@ class View(object):
 	#Sustitution & Historic's choices Yes/No
 	YesNo = ("Oui", "Non")
 
+	def menu(question, choices):
+
+		choice = None
+
+		print(question)
+
+		for num, choice in enumerate(choices):
+			print(str(num+1) + " : "+ choice)
+
+		while True:
+			try:
+				choice = int(input())
+				if choice in range(1, len(choices)+1):
+					break
+				else:
+					raise
+			except:
+				print(
+					"Veuillez entrer un nombre entre 1 et " 
+					+ str(len(choices)) + "."
+					)
+		print("Vous avez choisi: " + choices[choice-1])
+		return choice
+
 	@staticmethod	
-	def categories_list():
+	def categories_list(menu):
 		"""View of all categories."""
 		category_list = session.query(Category).all()
 		menu(question[0], categories_list)
@@ -63,36 +87,9 @@ class View(object):
 			It's substitute is {}".format(product.product_name, 
 			product.substituted, product.substitute))
 		
-	@staticmethod
-	def menu(question, choices):
-
-		choice = None
-
-		print(question)
-
-		for num, choice in enumerate(choices):
-			print(str(num+1) + " : "+ choice)
-
-		while True:
-			try:
-				choice = int(input())
-				if choice in range(1, len(choices)+1):
-					break
-				else:
-					raise
-			except:
-				print(
-					"Veuillez entrer un nombre entre 1 et " 
-					+ str(len(choices)) + "."
-					)
-		print("Vous avez choisi: " + choices[choice-1])
-		return choice
-
-# Translate ALL in english!
-
 #TEST LINES
 view = View()
-# view.categories_list() #issue Doesn't show anything
+view.categories_list(menu) #issue Doesn't show anything
 # view.products_list(2) #issue Doesn't show anything
 # view.product_sheet(7) #issue Doesn't show anything
-view.prod_sub(8) #issue Shows the print static text, but not the data form DB
+# view.prod_sub(8) #issue Shows the print static text, but not the data form DB
