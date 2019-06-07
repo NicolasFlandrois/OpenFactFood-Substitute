@@ -30,12 +30,12 @@ class Product(Base):
 	substitute = Column(Integer, ForeignKey('product.id'))
 	substituted = Column(Boolean)
 
-	def __repr__(self):
-		return str((self.ean))
-		return str((self.product_name))
-		return str((self.category))
-		return str((self.substitute))
-		return str((self.substituted))
+	# def __repr__(self):
+	# 	return str((self.ean))
+	# 	return str((self.product_name))
+	# 	return str((self.category))
+	# 	return str((self.substitute))
+	# 	return str((self.substituted))
 	
 class Category(Base):
 	"""docstring for Categories"""

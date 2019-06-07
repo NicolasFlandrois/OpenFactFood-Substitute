@@ -116,5 +116,5 @@ Son produit de substitution est {}".format(Product.product_name,
 view = View()
 # view.categories_list() #Works out
 # view.products_list() #Works out, but issue Doesn't take the choice's variable in consideration
-view.product_sheet() #issue Doesn't take the choice's variable in consideration
-# view.prod_sub() #issue Shows the print static text, but not the data form DB
+# view.product_sheet() #issue Doesn't take the choice's variable in consideration
+view.prod_sub() #issue Shows the print static text, but not the data form DB
