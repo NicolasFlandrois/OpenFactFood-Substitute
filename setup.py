@@ -11,6 +11,11 @@ from sqlalchemy_utils import create_database, database_exists
 
 from models import Product, Category
 
+from datetime import datetime
+
+startTime = datetime.now()
+print("Setup in progress. Please wait.")
+
 #1/ create DB in mysql named: off1
 if not database_exists("mysql+pymysql://odin:lincoln@localhost/off1"):
     create_database("mysql+pymysql://odin:lincoln@localhost/off1")
@@ -49,36 +54,30 @@ categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
     engine.execute(category.insert(), label=i)
 
-prods = [("3017620429484", "Nutella - Ferrero - 825 g", 1, 2, False),
-    ("3560070472888", "Pâte à tartiner - Carrefour Bio - 350 g", 1, 1, True),
-    ("5410126006957", "The original speculoos - Lotus - 400 g", 1, 4, False),
+prods = [("3017620429484", "Nutella - Ferrero", 1, 2, False),
+    ("3560070472888", "Pâte à tartiner - Carrefour Bio", 1, 1, True),
+    ("5410126006957", "The original speculoos - Lotus", 1, 4, False),
     ("3700774300487", "Pâte à tartiner Speculos - Speculoos ", 1, 3, True),
-    ("3760091721747", "Beurre de cacahuètes - Ethiquable - 350 g", 1, 6, False),
-    ("8710795630918", "peanut butter - Jack Klijn - 350 gr", 1, 5, True),
-    ("3045320001525", "Confiture Extra Fraises - Bonne Maman - 370 g", 2, 8, \
+    ("3760091721747", "Beurre de cacahuètes - Ethiquable", 1, 6, False),
+    ("8710795630918", "peanut butter - Jack Klijn", 1, 5, True),
+    ("3045320001525", "Confiture Extra Fraises - Bonne Maman", 2, 8, False),
+    ("3245390163868", "Confiture de fraises - Reflets de France", 2, 7, True),
+    ("3608580750031", "Confiture à L\'Abricot - Bonne Maman", 2, 10, False),
+    ("3245390034830", "Confiture d\'abricots - Reflets de France", 2, 9, True),
+    ("3045320001648", "Confiture orange - Bonne Maman", 2, 12, \
         False),
-    ("3245390163868", "Confiture extra de fraises du Perigord - \
-Reflets de France", 2, 7, True),
-    ("3608580750031", "Confiture à L\'Abricot Fruitée Intense - Bonne Maman - \
-340 g", 2, 10, False),
-    ("3245390034830", "Confiture d\'abricots du Roussillon - Reflets de France \
-- 325 g", 2, 9, True),
-    ("3045320001648", "Confiture orange en tranches - Bonne Maman - 370 g", 2, \
-        12, False),
-    ("3245390060709", "Confiture d\'oranges et de clémentines de Corse - \
-Reflets de France - 325 g", 2, 11, True),
-    ("2001111060035", "Coulis de fraises cuit à la marmite - Atelier Des Gouts \
-Sucres", 3, 14, False),
-    ("3228170819506", "Coulis Fraises Ponthier - 1 Kg", 3, 13, True),
-    ("3088542500278", "Pur Sirop d\'érable - Maple joe - 250 g", 3, 16, False),
-    ("0815126002179", "Sirop D\'érable 250g Pur 100% Origine Canada - Nokomis \
-- 250 g", 3, 15, True),
-    ("3088545004001", "Miel de fleurs - Lune de Miel - 500 g", 3, 18, False),
-    ("3088540202860", "Miel l\'Apiculteur : Poitou-Charente \
-- 500 g", 3, 17, True)]
+    ("3245390060709", "Confiture d\'oranges - Reflets de France", 2, 11, True),
+    ("2001111060035", "Coulis de fraises - Atelier Des Gouts Sucres", 3, 14, \
+        False),
+    ("3228170819506", "Coulis Fraises - Ponthier", 3, 13, True),
+    ("3088542500278", "Pur Sirop d\'érable - Maple joe", 3, 16, False),
+    ("0815126002179", "Sirop D\'érable Pur 100% - Nokomis", 3, 15, True),
+    ("3088545004001", "Miel de fleurs - Lune de Miel", 3, 18, False),
+    ("3088540202860", "Miel du Poitou-Charente - Miel l\'Apiculteur", 3, 17, \
+        True)]
 
 for index, (ean, name, category, substitute, substituted) in enumerate(prods):
-        engine.execute(product.insert(), ean=ean, product_name=name, 
+        engine.execute(product.insert(), ean=ean, name=name, 
             category=category, substituted=substituted)
 
 # create a configured "Session" class
@@ -94,7 +93,12 @@ for n in range(0, len(products), 2):
     prod.substitute = sub.id
     sub.substitute = prod.id
 session.commit()
-  
+
+finishTime = datetime.now()
+timeDetla = finishTime-startTime
+
+print("Setup is finished. Your database is available now.")
+print("The process was completed in : " + str(timeDetla.total_seconds()) + "s.")
 #NB ATTENTION: Improvement to provide here, for further development: 
 #here the databae's seed is made in a way, that the substitute follows the 
 #product. There for substitute is define by 1 out of 2. 
