@@ -64,11 +64,11 @@ class View(object):
 		
 		return View.menu(question, categoryList)
 		
-	def products_list(cat):
+	def products_list(catid):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
-		productQuery = session.query(Product).filter(Product.category==cat)
+		productQuery = session.query(Product).filter(Product.category==catid)
 
 		for choice in productQuery:
 			productList.append(str(choice))
@@ -80,13 +80,14 @@ class View(object):
 # AttributeError: 'View' object has no attribute 'translate'
 # & Issue this product_list() function takes only 1 argument, by giving one, it doesn't work.
 
-	def product_sheet(choice):
+	def product_sheet(prodid, *args, **kargs):
 		"""View of a specific product's ID and informations. Product sheet."""
-		prodSheet = session.query(Product).filter(
-			product.id == choice)
-		return prodSheet.__str__
+		# return session.query(Product).filter(Product.id == prod).__str__
+		# return prodSheet.__str__
+		prodSheet = session.query(Product).filter(Product.id == prodid)#.__str__
+		prodSheet.__str__
 		
-	def prod_sub(choice):
+	def prod_sub(prodid, *args, **kargs):
 		"""View of coresponding product and it's substitute.""" 
 		# product = session.query(Product).filter(
 		# 	Product.id == choice)
