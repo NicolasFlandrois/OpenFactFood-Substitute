@@ -64,7 +64,7 @@ class View(object):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
-		productQuery = session.query(Product).filter(Product.category==2)
+		productQuery = session.query(Product).filter(Product.category == catid)
 
 		for choice in productQuery:
 			productList.append(str(choice.product_name))
@@ -74,17 +74,21 @@ class View(object):
 	def product_sheet(choice, *args, **kargs):
 		"""View of a specific product's ID and informations. Product sheet."""
 		prodid = choice
-		prodSheet = session.query(Product).filter(Product.id == prodid)
-		# for i in prodSheet:
-		# 	print(i)
+		prodSheetList = []
+		prodSheet = session.query(Product).filter(Product.id == 12)
 
-		return "\
-Le produit selectionné est:       {}. \n\
-EAN-13:                           {}. \n\
-Son substitue est                 {}. \n\
-Ce produit est-il déjà substitué? {}.".format(
-			self.product_name, self.ean, self.substitute, self.substituted)
-		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
+		for choice in prodSheet:
+			prodSheetList.append(str(choice))
+		
+		print(prodSheetList)
+# 		return "\
+# Le produit selectionné est:       {}. \n\
+# EAN-13:                           {}. \n\
+# Son substitue est                 {}. \n\
+# Ce produit est-il déjà substitué? {}.".format(
+# 			prodSheetList[1], prodSheetList[0], prodSheetList[3], 
+# 			prodSheetList[4])
+# 		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
 		#codeline, it works. But if we identify the variable 'prodid', then it 
 		#doesn't work. PB in translation.
 		
@@ -111,6 +115,6 @@ Son produit de substitution est {}".format(Product.product_name,
 #TEST LINES
 view = View()
 # view.categories_list() #Works out
-view.products_list() #issue Doesn't take the choice's variable in consideration
-# view.product_sheet() #issue Doesn't take the choice's variable in consideration
+# view.products_list() #Works out, but issue Doesn't take the choice's variable in consideration
+view.product_sheet() #issue Doesn't take the choice's variable in consideration
 # view.prod_sub() #issue Shows the print static text, but not the data form DB
