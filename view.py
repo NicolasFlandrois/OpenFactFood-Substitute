@@ -16,8 +16,6 @@ engine = create_engine(
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# product = Product
-# category = Category
 
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
@@ -26,6 +24,7 @@ class View(object):
 		self.choice = 0
 		question = ("Historique de substitution? ") #Remaining question
 		
+
 	def menu(question, choices):
 		"""skeleton menu's view for each query and set of question"""
 
@@ -49,6 +48,7 @@ class View(object):
 		print("Vous avez choisi: " + choices[choice-1])
 		return choice
 	
+
 	def categories_list(*args, **kargs):
 		"""View of all categories."""
 		question = "Veuillez choisir une catégorie: "
@@ -60,6 +60,7 @@ class View(object):
 		
 		return View.menu(question, categoryList)
 		
+
 	def products_list(catid):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
@@ -71,6 +72,7 @@ class View(object):
 
 		return View.menu(question, productList)
 
+
 	def product_sheet(choice, *args, **kargs):
 		"""View of a specific product's ID and informations. Product sheet."""
 		prodid = choice
@@ -81,6 +83,7 @@ class View(object):
 			prodSheetList.append(str(choice))
 		
 		print(prodSheetList)
+
 # 		return "\
 # Le produit selectionné est:       {}. \n\
 # EAN-13:                           {}. \n\
@@ -88,10 +91,12 @@ class View(object):
 # Ce produit est-il déjà substitué? {}.".format(
 # 			prodSheetList[1], prodSheetList[0], prodSheetList[3], 
 # 			prodSheetList[4])
+
 # 		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
 		#codeline, it works. But if we identify the variable 'prodid', then it 
 		#doesn't work. PB in translation.
 		
+
 	def prod_sub(prodid, *args, **kargs):
 		"""View of coresponding product and it's substitute.""" 
 		question = "Voulez vous substituer ce produit? "
@@ -111,6 +116,7 @@ Son produit de substitution est {}".format(Product.product_name,
 		# if choice == "Oui":
 		# 	#Apply substitution's changes
 		# pass
+		
 		
 #TEST LINES
 view = View()
