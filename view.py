@@ -10,7 +10,7 @@ from models import Product, Category
 
 engine = create_engine(
 	'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306', 
-	echo=True, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+	echo=False, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -48,7 +48,7 @@ class View(object):
 		return choice
 	
 
-	def categories_list(*args, **kargs):
+	def categories_list():
 		"""View of all categories."""
 		question = "Veuillez choisir une catégorie: "
 		categoryList = []
@@ -64,40 +64,38 @@ class View(object):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
+		productids = []
 		productQuery = session.query(Product).filter(Product.category == catid)
 
 		for choice in productQuery:
-			productList.append(str(choice.product_name))
+			productList.append(choice.product_name)
+			productids.append(choice.id)
 
-		return View.menu(question, productList)
+		return productids[View.menu(question, productList)-1]
 
-
-	def product_sheet(choice, *args, **kargs):
-		"""View of a specific product's ID and informations. Product sheet."""
-		prodid = choice
-		prodSheetList = []
-		prodSheet = session.query(Product).filter(Product.id == 12)
-
-		for choice in prodSheet:
-			prodSheetList.append(str(choice))
 		
-		print(prodSheetList)
 
-		return "\
+	def product_sheet(product_id):
+		"""View of a specific product's ID and informations. Product sheet."""
+		response = session.query(Product).filter(Product.id == product_id)  #get à la place de filter à vérifier
+
+		for product in response:
+			print( "\
 Le produit selectionné est:       {}. \n\
 EAN-13:                           {}. \n\
 Son substitue est                 {}. \n\
 Ce produit est-il déjà substitué? {}.".format(
-			prodSheetList[1], prodSheetList[0], prodSheetList[3], 
-			prodSheetList[4])
+			product.product_name, product.ean, product.substitute, 
+			product.substituted))
+			return
 		
 
-	def prod_sub(prodid, *args, **kargs):
+	def prod_sub(prodid):
 		"""View of coresponding product and it's substitute.""" 
 		question = "Voulez vous substituer ce produit? "
 		YesNo = ("Oui", "Non")
 		prodSubList = []
-		prodSubQuery = session.query(Product).filter(Product.id == 8)
+		prodSubQuery = session.query(Product).filter(Product.id == prodid)
 		
 		#Here find a way to separate info from the query, (not in __str__ format)		
 		
@@ -112,13 +110,17 @@ Son produit de substitution est {}".format(Product.product_name,
 		# 	#Apply substitution's changes
 		# pass
 		
+	def History(prodis, *args, **kargs):
+		"""This function will provide the poduct's substitution history."""
+		#1/ al.Query 
+		pass
+
 
 #TEST LINES
-view = View()
-# view.categories_list() #Works out
-# view.products_list() #Works out, but issue Doesn't take the choice's variable in consideration
-# view.product_sheet() #issue Doesn't take the choice's variable in consideration
-view.prod_sub() #issue Shows the print static text, but not the data form DB & Doesn't take the choice's variable in consideration
+# View.categories_list() #Works out
+# print(View.products_list(2)) #Works out, but issue Doesn't take the choice's variable in consideration
+# print(View.product_sheet(12)) #issue Doesn't take the choice's variable in consideration
+# print(View.prod_sub(11)) #issue Shows the print static text, but not the data form DB & Doesn't take the choice's variable in consideration
 
 #MAIN ISSUE: if the product.id's choice to correspond to is hardwired in the 
 #codeline, it works. But if we identify the variable 'prodid', then it 

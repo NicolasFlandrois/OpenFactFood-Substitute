@@ -6,5 +6,12 @@
 from models import Product, Category
 from view import View
 
+def main():
+	"""docstring ici"""
+	category_id = View.categories_list()
+	prod_id = View.products_list(category_id)
+	View.product_sheet(prod_id)
+
 
 if __name__ == '__main__':
+	main()
