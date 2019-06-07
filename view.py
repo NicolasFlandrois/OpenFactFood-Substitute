@@ -64,24 +64,26 @@ class View(object):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
-		productQuery = session.query(Product).filter(Product.category==10)
+		productQuery = session.query(Product).filter(Product.category==2)
 
 		for choice in productQuery:
-			productList.append(str(choice))
+			productList.append(str(choice.product_name))
 
 		return View.menu(question, productList)
-		#ISSUE:
-# File "/usr/local/lib/python3.5/dist-packages/pymysql/converters.py", line 73, in _escape_unicode
-# return value.translate(_escape_table)
-# AttributeError: 'View' object has no attribute 'translate'
-# & Issue this product_list() function takes only 1 argument, by giving one, it doesn't work.
 
 	def product_sheet(choice, *args, **kargs):
 		"""View of a specific product's ID and informations. Product sheet."""
 		prodid = choice
 		prodSheet = session.query(Product).filter(Product.id == prodid)
-		for i in prodSheet:
-			print(i)
+		# for i in prodSheet:
+		# 	print(i)
+
+		return "\
+Le produit selectionné est:       {}. \n\
+EAN-13:                           {}. \n\
+Son substitue est                 {}. \n\
+Ce produit est-il déjà substitué? {}.".format(
+			self.product_name, self.ean, self.substitute, self.substituted)
 		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
 		#codeline, it works. But if we identify the variable 'prodid', then it 
 		#doesn't work. PB in translation.
