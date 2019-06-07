@@ -78,12 +78,13 @@ class View(object):
 # 		File "/usr/local/lib/python3.5/dist-packages/pymysql/converters.py", line 73, in _escape_unicode
 #     return value.translate(_escape_table)
 # AttributeError: 'View' object has no attribute 'translate'
+# & Issue this product_list() function takes only 1 argument, by giving one, it doesn't work.
 
 	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
-		prod_sheet = session.query(Product).filter(
-			product.id == choice).__str__
-		print(prod_sheet)
+		prodSheet = session.query(Product).filter(
+			product.id == choice)
+		return prodSheet.__str__
 		
 	def prod_sub(choice):
 		"""View of coresponding product and it's substitute.""" 
@@ -100,6 +101,6 @@ class View(object):
 view = View()
 # view.categories_list() #Works out
 
-view.products_list() #issue Doesn't show anything
-# view.product_sheet(7) #issue Doesn't show anything
+# view.products_list() #issue Doesn't show anything
+view.product_sheet(7) #issue Doesn't show anything
 # view.prod_sub(8) #issue Shows the print static text, but not the data form DB
