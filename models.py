@@ -31,10 +31,11 @@ class Product(Base):
 	substituted = Column(Boolean)
 
 	def __str__(self):
-		return "The product selected is: {}. \n \
-		It's EAN-13 barcode is: {}. \n \
-		It's product of substitution is {}. \n \
-		Is this product currently substituted? {}.".format(
+		return "\
+Le produit selectionné est:       {}. \n\
+EAN-13:                           {}. \n\
+Son substitue est                 {}. \n\
+Ce produit est-il déjà substitué? {}.".format(
 			self.product_name, self.ean, self.substitute, self.substituted)
 	
 class Category(Base):

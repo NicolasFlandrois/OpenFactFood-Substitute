@@ -64,35 +64,42 @@ class View(object):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
-		productQuery = session.query(Product).filter(Product.category==catid)
+		productQuery = session.query(Product).filter(Product.category==10)
 
 		for choice in productQuery:
 			productList.append(str(choice))
 
 		return View.menu(question, productList)
 		#ISSUE:
-# 		File "/usr/local/lib/python3.5/dist-packages/pymysql/converters.py", line 73, in _escape_unicode
-#     return value.translate(_escape_table)
+# File "/usr/local/lib/python3.5/dist-packages/pymysql/converters.py", line 73, in _escape_unicode
+# return value.translate(_escape_table)
 # AttributeError: 'View' object has no attribute 'translate'
 # & Issue this product_list() function takes only 1 argument, by giving one, it doesn't work.
 
-	def product_sheet(prodid, *args, **kargs):
+	def product_sheet(choice, *args, **kargs):
 		"""View of a specific product's ID and informations. Product sheet."""
-		# return session.query(Product).filter(Product.id == prod).__str__
-		# return prodSheet.__str__
-		prodSheet = session.query(Product).filter(Product.id == prodid)#.__str__
-		prodSheet.__str__
-		#Issue here, doesn't work out
+		prodid = choice
+		prodSheet = session.query(Product).filter(Product.id == prodid)
+		for i in prodSheet:
+			print(i)
+		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
+		#codeline, it works. But if we identify the variable 'prodid', then it 
+		#doesn't work. PB in translation.
 		
 	def prod_sub(prodid, *args, **kargs):
 		"""View of coresponding product and it's substitute.""" 
 		question = "Voulez vous substituer ce produit? "
 		YesNo = ("Oui", "Non")
-		product = session.query(Product).filter(Product.id == prodid)
+		prodSubList = []
+		prodSubQuery = session.query(Product).filter(Product.id == 8)
+		
+		#Here find a way to separate info from the query, (not in __str__ format)		
+		
 		print("Produit original: {} \n \
 Ce produit a-t-il été déjà substitué? {} \n \
 Son produit de substitution est {}".format(Product.product_name, 
 	Product.substituted, Product.substitute))
+		
 		return View.menu(question, YesNo)
 		
 		# if choice == "Oui":
@@ -102,7 +109,6 @@ Son produit de substitution est {}".format(Product.product_name,
 #TEST LINES
 view = View()
 # view.categories_list() #Works out
-
-# view.products_list() #issue Doesn't show anything
-#view.product_sheet(7) #issue Doesn't show anything
-view.prod_sub(8) #issue Shows the print static text, but not the data form DB
+view.products_list() #issue Doesn't take the choice's variable in consideration
+# view.product_sheet() #issue Doesn't take the choice's variable in consideration
+# view.prod_sub() #issue Shows the print static text, but not the data form DB
