@@ -23,17 +23,15 @@ class View(object):
 	"""Views to display various infos needed through software's cicles."""
 	
 	def __init__(self):
-		choice = 0
-		question = ("Veuillez choisir une catégorie: ",
-		"veuillez choisir un produit : ",
+		self.choice = 0
+		question = (
+		"",
 		"Voulez vous substituer ce produit? ", 
 		"Historique de substitution? ")
 		#Sustitution & Historic's choices Yes/No
 		YesNo = ("Oui", "Non")
 
 	def menu(question, choices):
-
-		choice = None
 
 		print(question)
 
@@ -58,17 +56,28 @@ class View(object):
 	def categories_list(*args, **kargs):
 		"""View of all categories."""
 		question = "Veuillez choisir une catégorie: "
-		category_list = []
-		category_query = session.query(Category).all()
-		for choice in category_query:
-			category_list.append(str(choice))
-		return View.menu(question, category_list)
+		categoryList = []
+		categoryQuery = session.query(Category).all()
+
+		for choice in categoryQuery:
+			categoryList.append(str(choice))
 		
-	def products_list(choice):
+		return View.menu(question, categoryList)
+		
+	def products_list(cat):
 		"""View of all products within a category."""
-		product_list = session.query(Product).filter(
-			product.category == choice)
-		print(product_list)
+		question = "Veuillez choisir un produit : "
+		productList = []
+		productQuery = session.query(Product).filter(Product.category==cat)
+
+		for choice in productQuery:
+			productList.append(str(choice))
+
+		return View.menu(question, productList)
+		#ISSUE:
+# 		File "/usr/local/lib/python3.5/dist-packages/pymysql/converters.py", line 73, in _escape_unicode
+#     return value.translate(_escape_table)
+# AttributeError: 'View' object has no attribute 'translate'
 
 	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
@@ -89,7 +98,8 @@ class View(object):
 		
 #TEST LINES
 view = View()
-view.categories_list() #issue Doesn't show anything
-# view.products_list(2) #issue Doesn't show anything
+# view.categories_list() #Works out
+
+view.products_list() #issue Doesn't show anything
 # view.product_sheet(7) #issue Doesn't show anything
 # view.prod_sub(8) #issue Shows the print static text, but not the data form DB
