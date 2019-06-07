@@ -28,7 +28,7 @@ product = Table(
     'product', metadata,
     Column('id', Integer, primary_key=True),
     Column('ean', String(13), nullable=False),
-    Column('product_name', String(50)),
+    Column('name', String(50)),
     Column('category', Integer, ForeignKey('category.id')),
     Column('substitute', Integer, ForeignKey('product.id')),
     Column('substituted', Boolean),

@@ -46,6 +46,7 @@ class View(object):
 					)
 		print("Vous avez choisi: " + choices[choice-1])
 		return choice
+		#Add possibility to: (R) Return a step back, or (Q) Quit
 	
 
 	def categories_list():
@@ -60,59 +61,61 @@ class View(object):
 		return View.menu(question, categoryList)
 		
 
-	def products_list(catid):
+	def products_list(cat_id):
 		"""View of all products within a category."""
 		question = "Veuillez choisir un produit : "
 		productList = []
-		productids = []
-		productQuery = session.query(Product).filter(Product.category == catid)
+		product_ids = []
+		response = session.query(Product).filter(Product.category == cat_id)
 
-		for choice in productQuery:
-			productList.append(choice.product_name)
-			productids.append(choice.id)
+		for product in response:
+			productList.append(product.name)
+			product_ids.append(product.id)
 
-		return productids[View.menu(question, productList)-1]
+		return product_ids[View.menu(question, productList)-1]
 
-		
 
 	def product_sheet(product_id):
 		"""View of a specific product's ID and informations. Product sheet."""
-		response = session.query(Product).filter(Product.id == product_id)  #get à la place de filter à vérifier
+		response = session.query(Product).filter(Product.id == product_id)
+		resp_sub = session.query(Product)\
+		.filter(Product.id == resp_prod.substitute)  #get à la place de filter à vérifier
 
-		for product in response:
-			print( "\
+		# for product in response:
+		print("\
 Le produit selectionné est:       {}. \n\
 EAN-13:                           {}. \n\
 Son substitue est                 {}. \n\
 Ce produit est-il déjà substitué? {}.".format(
-			product.product_name, product.ean, product.substitute, 
-			product.substituted))
-			return
+		response.name, response.ean, resp_sub.name, 
+		response.substituted))
+		return
 		
 
-	def prod_sub(prodid):
+	def prod_sub(product_id):
 		"""View of coresponding product and it's substitute.""" 
 		question = "Voulez vous substituer ce produit? "
 		YesNo = ("Oui", "Non")
 		prodSubList = []
-		prodSubQuery = session.query(Product).filter(Product.id == prodid)
-		
-		#Here find a way to separate info from the query, (not in __str__ format)		
-		
+		resp_prod = session.query(Product).filter(Product.id == product_id)
+		resp_sub = session.query(Product).filter(Product.id == resp_prod.substitute)
+		# for product in response_prod:
 		print("Produit original: {} \n \
 Ce produit a-t-il été déjà substitué? {} \n \
-Son produit de substitution est {}".format(Product.product_name, 
-	Product.substituted, Product.substitute))
+Son produit de substitution est {}".format(resp_prod.name, 
+	resp_prod.substituted, resp_sub.name)) #Identify the substitute by it's name.
 		
-		return View.menu(question, YesNo)
+		choice = View.menu(question, YesNo)
 		
 		# if choice == "Oui":
 		# 	#Apply substitution's changes
+		# 	#Apply product.substituted = True
+		# 	#Apply to sub.id.substituted = False
 		# pass
 		
-	def History(prodis, *args, **kargs):
+	def History(product_id):
 		"""This function will provide the poduct's substitution history."""
-		#1/ al.Query 
+		#1/ al.Query How to get the history from MySQL?
 		pass
 
 
