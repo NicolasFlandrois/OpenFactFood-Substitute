@@ -6,7 +6,6 @@
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine
-from menu import Menu
 from models import Product, Category
 
 engine = create_engine(
@@ -117,7 +116,7 @@ Son produit de substitution est {}".format(Product.product_name,
 		# 	#Apply substitution's changes
 		# pass
 		
-		
+
 #TEST LINES
 view = View()
 # view.categories_list() #Works out
