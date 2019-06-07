@@ -83,17 +83,13 @@ class View(object):
 		
 		print(prodSheetList)
 
-# 		return "\
-# Le produit selectionné est:       {}. \n\
-# EAN-13:                           {}. \n\
-# Son substitue est                 {}. \n\
-# Ce produit est-il déjà substitué? {}.".format(
-# 			prodSheetList[1], prodSheetList[0], prodSheetList[3], 
-# 			prodSheetList[4])
-
-# 		#ISSUE: if the product.id's choice to correspond to is hardwired in the 
-		#codeline, it works. But if we identify the variable 'prodid', then it 
-		#doesn't work. PB in translation.
+		return "\
+Le produit selectionné est:       {}. \n\
+EAN-13:                           {}. \n\
+Son substitue est                 {}. \n\
+Ce produit est-il déjà substitué? {}.".format(
+			prodSheetList[1], prodSheetList[0], prodSheetList[3], 
+			prodSheetList[4])
 		
 
 	def prod_sub(prodid, *args, **kargs):
@@ -123,3 +119,7 @@ view = View()
 # view.products_list() #Works out, but issue Doesn't take the choice's variable in consideration
 # view.product_sheet() #issue Doesn't take the choice's variable in consideration
 view.prod_sub() #issue Shows the print static text, but not the data form DB & Doesn't take the choice's variable in consideration
+
+#MAIN ISSUE: if the product.id's choice to correspond to is hardwired in the 
+#codeline, it works. But if we identify the variable 'prodid', then it 
+#doesn't work. PB in translation.
