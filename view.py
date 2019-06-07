@@ -24,14 +24,10 @@ class View(object):
 	
 	def __init__(self):
 		self.choice = 0
-		question = (
-		"",
-		"Voulez vous substituer ce produit? ", 
-		"Historique de substitution? ")
-		#Sustitution & Historic's choices Yes/No
-		YesNo = ("Oui", "Non")
-
+		question = ("Historique de substitution? ") #Remaining question
+		
 	def menu(question, choices):
+		"""skeleton menu's view for each query and set of question"""
 
 		print(question)
 
@@ -86,22 +82,27 @@ class View(object):
 		# return prodSheet.__str__
 		prodSheet = session.query(Product).filter(Product.id == prodid)#.__str__
 		prodSheet.__str__
+		#Issue here, doesn't work out
 		
 	def prod_sub(prodid, *args, **kargs):
 		"""View of coresponding product and it's substitute.""" 
-		# product = session.query(Product).filter(
-		# 	Product.id == choice)
-		product = session.query(Product).all().filter(
-			Product.id == choice)
-		print("Original product: {} \n \
-			Is this product corrently substituted? {} \n \
-			It's substitute is {}".format(product.product_name, 
-			product.substituted, product.substitute))
+		question = "Voulez vous substituer ce produit? "
+		YesNo = ("Oui", "Non")
+		product = session.query(Product).filter(Product.id == prodid)
+		print("Produit original: {} \n \
+Ce produit a-t-il été déjà substitué? {} \n \
+Son produit de substitution est {}".format(Product.product_name, 
+	Product.substituted, Product.substitute))
+		return View.menu(question, YesNo)
+		
+		# if choice == "Oui":
+		# 	#Apply substitution's changes
+		# pass
 		
 #TEST LINES
 view = View()
 # view.categories_list() #Works out
 
 # view.products_list() #issue Doesn't show anything
-view.product_sheet(7) #issue Doesn't show anything
-# view.prod_sub(8) #issue Shows the print static text, but not the data form DB
+#view.product_sheet(7) #issue Doesn't show anything
+view.prod_sub(8) #issue Shows the print static text, but not the data form DB
