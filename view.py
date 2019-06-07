@@ -81,7 +81,7 @@ class View(object):
 		resp_sub = session.query(Product)\
 		.filter(Product.id == resp_prod.substitute)  #get à la place de filter à vérifier
 
-		# for product in response:
+		# for product in response: #Verify if this line is irelevant
 		print("\
 Le produit selectionné est:       {}. \n\
 EAN-13:                           {}. \n\
@@ -99,7 +99,7 @@ Ce produit est-il déjà substitué? {}.".format(
 		prodSubList = []
 		resp_prod = session.query(Product).filter(Product.id == product_id)
 		resp_sub = session.query(Product).filter(Product.id == resp_prod.substitute)
-		# for product in response_prod:
+		# for product in response_prod: #Verify if this line is irelevant
 		print("Produit original: {} \n \
 Ce produit a-t-il été déjà substitué? {} \n \
 Son produit de substitution est {}".format(resp_prod.name, 
