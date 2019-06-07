@@ -62,12 +62,8 @@ class View(object):
 		category_query = session.query(Category).all()
 		for choice in category_query:
 			category_list.append(str(choice))
-		#print(type(category_list)) #Type class == list
-		print(category_list)
-			#print the list, but isn't a list of strings. Stored as VAR
-		#return View.menu(question, category_list)
-		#use menu to display
-
+		return View.menu(question, category_list)
+		
 	def products_list(choice):
 		"""View of all products within a category."""
 		product_list = session.query(Product).filter(
