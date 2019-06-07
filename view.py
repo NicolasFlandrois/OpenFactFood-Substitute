@@ -22,13 +22,14 @@ session = Session()
 class View(object):
 	"""Views to display various infos needed through software's cicles."""
 	
-	choice = 0
-	question = ("Veuillez choisir une catégorie: ",
-	"veuillez choisir un produit : ",
-	"Voulez vous substituer ce produit? ", 
-	"Historique de substitution? ")
-	#Sustitution & Historic's choices Yes/No
-	YesNo = ("Oui", "Non")
+	def __init__(self):
+		choice = 0
+		question = ("Veuillez choisir une catégorie: ",
+		"veuillez choisir un produit : ",
+		"Voulez vous substituer ce produit? ", 
+		"Historique de substitution? ")
+		#Sustitution & Historic's choices Yes/No
+		YesNo = ("Oui", "Non")
 
 	def menu(question, choices):
 
@@ -53,29 +54,32 @@ class View(object):
 					)
 		print("Vous avez choisi: " + choices[choice-1])
 		return choice
-
-	@staticmethod	
-	def categories_list(menu):
+	
+	def categories_list(*args, **kargs):
 		"""View of all categories."""
-		category_list = session.query(Category).all()
-		menu(question[0], categories_list)
+		question = "Veuillez choisir une catégorie: "
+		category_list = []
+		category_query = session.query(Category).all()
+		for choice in category_query:
+			category_list.append(str(choice))
+		#print(type(category_list)) #Type class == list
+		print(category_list)
+			#print the list, but isn't a list of strings. Stored as VAR
+		#return View.menu(question, category_list)
 		#use menu to display
 
-	@staticmethod
 	def products_list(choice):
 		"""View of all products within a category."""
 		product_list = session.query(Product).filter(
 			product.category == choice)
 		print(product_list)
-	
-	@staticmethod
+
 	def product_sheet(choice):
 		"""View of a specific product's ID and informations. Product sheet."""
 		prod_sheet = session.query(Product).filter(
 			product.id == choice).__str__
 		print(prod_sheet)
 		
-	@staticmethod
 	def prod_sub(choice):
 		"""View of coresponding product and it's substitute.""" 
 		# product = session.query(Product).filter(
@@ -89,7 +93,7 @@ class View(object):
 		
 #TEST LINES
 view = View()
-view.categories_list(menu) #issue Doesn't show anything
+view.categories_list() #issue Doesn't show anything
 # view.products_list(2) #issue Doesn't show anything
 # view.product_sheet(7) #issue Doesn't show anything
 # view.prod_sub(8) #issue Shows the print static text, but not the data form DB
