@@ -18,7 +18,9 @@
 - Python 3.x
 
 	cf: requirements.txt for python dependencies required installs
+
 	run in terminal:
+	
 		pip3 install -r [path-to-filr]/requirements.txt
 
 **Setup**:
