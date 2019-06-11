@@ -1,4 +1,4 @@
-#!usr/bin/python3.5
+#!usr/bin/python3.7
 # UTF8
 # Date: Thu 09 May 2019 14:40:35 CEST
 # Author: Nicolas Flandrois
