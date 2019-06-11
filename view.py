@@ -107,6 +107,7 @@ Son produit de substitution est {}".format(product.name, product.substituted,
 		
 		choice = View.menu(question, YesNo)
 		
+		#Maybe apply here an outside function : substitution_action()
 		# if choice == "Oui":
 		# 	#Apply substitution's changes
 		# 	#Apply product.substituted = True
