@@ -21,6 +21,6 @@
 
 	run in terminal:
 	
-		pip3 install -r [path-to-filr]/requirements.txt
+		pip3 install -r [path-to-file]/requirements.txt
 
 **Setup**:
