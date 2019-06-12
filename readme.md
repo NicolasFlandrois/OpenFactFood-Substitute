@@ -11,6 +11,8 @@
 
 **Description**:
 
+***How to run this script***:
+
 -------------------------------------------------------------
 
 ***Setup recommandations***:
@@ -24,3 +26,9 @@
 		pip3 install -r [path-to-file]/requirements.txt
 
 **Setup**:
+1/Change your database (MySQL/MariaDB) credential in the config.json file. Update info with your personnal :
+	i/Username
+	ii/Password
+	iii/Host name (MySQL/MariaDB by default should remain 'localhost')
+	iv/Port (MySQL/MariaDB by default should remain '3306')
+2/Run the 'setup.py' file, to create, and populate your database with relevent data set.
