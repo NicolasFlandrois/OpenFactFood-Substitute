@@ -3,6 +3,7 @@
 # Date: Thu 09 May 2019 14:40:35 CEST
 # Author: Nicolas Flandrois
 
+import json
 from sqlalchemy import Column, Integer, String, Boolean, Table
 from sqlalchemy import create_engine, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -17,6 +18,9 @@ startTime = datetime.now()
 print("Setup in progress. Please wait.")
 
 # 1/ create DB in mysql named: off1
+with open("config.json") as f:
+    config = json.load(f)
+
 if not database_exists("mysql+pymysql://odin:lincoln@localhost/off1"):
     create_database("mysql+pymysql://odin:lincoln@localhost/off1")
 
