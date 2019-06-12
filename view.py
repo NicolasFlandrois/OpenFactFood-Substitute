@@ -86,13 +86,11 @@ class View(object):
                                                      product.substitute)
 
             for sub in resp_sub:
-                print("\
-Le produit selectionné est:       {}. \n\
-EAN-13:                           {}. \n\
-Son substitue est:                {}. \n\
-Ce produit est-il déjà substitué? {}. \n"
-                      .format(product.name, product.ean, sub.name,
-                              product.substituted))
+                print(f"\
+Le produit selectionné est:       {product.name}. \n\
+EAN-13:                           {product.ean}. \n\
+Son substitue est:                {sub.name}. \n\
+Ce produit est-il déjà substitué? {product.substituted}. \n")
                 return
 
     def prod_sub(product_id):
@@ -105,11 +103,10 @@ Ce produit est-il déjà substitué? {}. \n"
             resp_sub = session.query(Product).filter(Product.id ==
                                                      product.substitute)
             for sub in resp_sub:
-                print("\
-Produit original: {} \n\
-Ce produit a-t-il été déjà substitué? {} \n\
-Son produit de substitution est {}".format(product.name, product.substituted,
-                                           sub.name))
+                print(f"\
+Produit original: {product.name} \n\
+Ce produit a-t-il été déjà substitué? {product.substituted} \n\
+Son produit de substitution est {sub.name}")
 
         choice = View.menu(question, YesNo)
 
