@@ -104,14 +104,29 @@ Son produit de substitution est {}".format(product.name, product.substituted,
         choice = View.menu(question, YesNo)
 
         # Maybe apply here an outside function : substitution_action()
-        # if choice == "Oui":
-        #   #Apply substitution's changes
-        #   #Apply product.substituted = True
-        #   #Apply to sub.id.substituted = False
-        # pass
-
-    def History(product_id):
-        """This function will provide the poduct's substitution history."""
-        question = "Historique de substitution? "
-        # 1/ al.Query How to get the history from MySQL?
+        if choice == "Oui":
+          #Apply substitution's changes
+          #Apply product.substituted = True
+          #Apply to sub.id.substituted = False
         pass
+
+    def SubTbl():
+        """This function will display the list of all substituted products in
+        the database, along with its matching substitute. 
+        Data a from real time database.
+
+                 (Col 0)              (Col 1)
+        +----------------------+--------------------+
+        |Subststituted product | Current Substitute |
+        +======================+====================+
+        | Product A   (True)   | Prod Sub-A (False) |
+        +----------------------+--------------------+
+        | Product B            | Product Sub-B      |
+        +----------------------+--------------------+
+        | Product C            | Product Sub-C      |
+        +----------------------+--------------------+
+        | Product etc...       | Sub - etc...       |
+        +----------------------+--------------------+
+
+        Display in column 0, all products for which Substituted == True.
+        Display in column 1, all corresponding products to substitution."""
