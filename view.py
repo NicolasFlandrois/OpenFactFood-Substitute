@@ -3,14 +3,24 @@
 # Date: Thu 09 May 2019 14:40:35 CEST
 # Author: Nicolas Flandrois
 
+import json
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine
 from models import Product, Category
 
+with open("config.json") as f:
+    config = json.load(f)
+
+username = config["username"]
+password = config["password"]
+host = config["host"]
+port = config["port"]
+
 engine = create_engine(
-    'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306',
-    echo=False, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+    f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
+    {port}', echo=False, encoding='utf8', pool_recycle=60000,
+    pool_pre_ping=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -104,11 +114,11 @@ Son produit de substitution est {}".format(product.name, product.substituted,
         choice = View.menu(question, YesNo)
 
         # Maybe apply here an outside function : substitution_action()
-        if choice == "Oui":
-          #Apply substitution's changes
-          #Apply product.substituted = True
-          #Apply to sub.id.substituted = False
-        pass
+        # if choice == 1:
+        #   #Apply substitution's changes
+        #   #Apply product.substituted = True
+        #   #Apply to sub.id.substituted = False
+        # pass
 
     def SubTbl():
         """This function will display the list of all substituted products in

@@ -21,14 +21,20 @@ print("Setup in progress. Please wait.")
 with open("config.json") as f:
     config = json.load(f)
 
-if not database_exists("mysql+pymysql://odin:lincoln@localhost/off1"):
-    create_database("mysql+pymysql://odin:lincoln@localhost/off1")
+username = config["username"]
+password = config["password"]
+host = config["host"]
+port = config["port"]
+
+if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
+    create_database(f'mysql+pymysql://{username}:{password}@{host}/off1')
 
 # 2/connect to database: off1
 Base = declarative_base()
 engine = create_engine(
-    'mysql+pymysql://odin:lincoln@localhost/off1?host=localhost?port=3306',
-    echo=False, encoding='utf8', pool_recycle=60000, pool_pre_ping=True)
+    f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
+    {port}', echo=False, encoding='utf8', pool_recycle=60000,
+    pool_pre_ping=True)
 
 # 3/ Create tables in DB, named: category & product
 metadata = MetaData(engine)
@@ -87,8 +93,8 @@ prods = [("3017620429484", "Nutella - Ferrero", 1, 2, False),
           17, True)]
 
 for index, (ean, name, category, substitute, substituted) in enumerate(prods):
-        engine.execute(product.insert(), ean=ean, name=name,
-                       category=category, substituted=substituted)
+    engine.execute(product.insert(), ean=ean, name=name,
+                   category=category, substituted=substituted)
 
 # create a configured "Session" class
 Session = sessionmaker(bind=engine)
