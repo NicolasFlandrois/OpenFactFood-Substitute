@@ -4,6 +4,8 @@
 # Author: Nicolas Flandrois
 
 import json
+from urllib.request import urlopen
+
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine
@@ -81,14 +83,30 @@ class View(object):
         """View of a specific product's ID and informations. Product sheet."""
         response = session.query(Product).filter(Product.id == product_id)
 
+        
+
         for product in response:
             resp_sub = session.query(Product).filter(Product.id ==
                                                      product.substitute)
+
+            with urlopen(f"https://world.openfoodfacts.org/api/v0/product/\
+                {product.ean}.json") as response:
+                source = response.read()
+
+            data = json.loads(source)
+
+            quantity = data['product']['quantity']
+            ingredients = data['product']['ingredients_text_fr']
 
             for sub in resp_sub:
                 print(f"\
 Le produit selectionné est:       {product.name}. \n\
 EAN-13:                           {product.ean}. \n\
+Poids:                            {quantity}. \n\
+\n\
+Liste d'ingrédients:\n\
+{ingredients}. \n\
+\n\
 Son substitue est:                {sub.name}. \n\
 Ce produit est-il déjà substitué? {product.substituted}. \n")
                 return

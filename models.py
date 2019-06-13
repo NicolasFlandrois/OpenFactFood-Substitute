@@ -4,6 +4,7 @@
 # Author: Nicolas Flandrois
 
 import json
+
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
