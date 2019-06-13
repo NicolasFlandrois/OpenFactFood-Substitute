@@ -95,8 +95,19 @@ class View(object):
 
             data = json.loads(source)
 
-            quantity = data['product']['quantity']
-            ingredients = data['product']['ingredients_text_fr']
+            try:
+                quantity = data['product']['quantity']
+            except:
+                quantity = "-Données indisponible-"
+
+            try:
+                ingredients = data['product']['ingredients_text_fr']
+            except:
+                ingredients = "-Données indisponible-"
+
+            if product.substituted == True:
+                substituted = "Oui"
+            substituted = "Non"
 
             for sub in resp_sub:
                 print(f"\
@@ -108,7 +119,7 @@ Liste d'ingrédients:\n\
 {ingredients}. \n\
 \n\
 Son substitue est:                {sub.name}. \n\
-Ce produit est-il déjà substitué? {product.substituted}. \n")
+Ce produit est-il déjà substitué? {substituted}. \n")
                 return
 
     def prod_sub(product_id):
@@ -120,10 +131,15 @@ Ce produit est-il déjà substitué? {product.substituted}. \n")
         for product in resp_prod:
             resp_sub = session.query(Product).filter(Product.id ==
                                                      product.substitute)
+
+            if product.substituted == True:
+                substituted = "Oui"
+            substituted = "Non"
+
             for sub in resp_sub:
                 print(f"\
 Produit original: {product.name} \n\
-Ce produit a-t-il été déjà substitué? {product.substituted} \n\
+Ce produit a-t-il été déjà substitué? {substituted} \n\
 Son produit de substitution est {sub.name}")
 
         choice = View.menu(question, YesNo)
