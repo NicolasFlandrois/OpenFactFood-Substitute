@@ -105,7 +105,8 @@ class View(object):
 
             if product.substituted is True:
                 substituted = "Oui"
-            substituted = "Non"
+            else:
+                substituted = "Non"
 
             for sub in resp_sub:
                 print(f"\
@@ -132,7 +133,8 @@ Ce produit est-il déjà substitué? {substituted}. \n")
 
             if product.substituted is True:
                 substituted = "Oui"
-            substituted = "Non"
+            else:
+                substituted = "Non"
 
             for sub in resp_sub:
                 print(f"\
@@ -145,13 +147,9 @@ Son produit de substitution est {sub.name}")
         # Maybe apply here an outside function : substitution_action()
         if choice == 1:
             # Apply substitution's changes
-            resp_prod.update()\
-             .where(Product.id == product_id)\
-             .values(substituted=True)
+            product.substituted = True
 
-            resp_prod.update()\
-             .where(Product.id == product.substitute)\
-             .values(substituted=False)
+            sub.substituted = False
 
             session.commit()
 
