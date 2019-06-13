@@ -8,7 +8,7 @@ from urllib.request import urlopen
 
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, update
 from models import Product, Category
 
 with open("config.json") as f:
@@ -48,8 +48,8 @@ class View(object):
                     raise
             except:
                 print(
-                    "Veuillez entrer un nombre entre 1 et "
-                    + str(len(choices)) + "."
+                    "Veuillez entrer un nombre entre 1 et " +
+                    str(len(choices)) + "."
                     )
         print("Vous avez choisi: " + choices[choice-1] + "\n")
         return choice
@@ -83,14 +83,12 @@ class View(object):
         """View of a specific product's ID and informations. Product sheet."""
         response = session.query(Product).filter(Product.id == product_id)
 
-        
-
         for product in response:
             resp_sub = session.query(Product).filter(Product.id ==
                                                      product.substitute)
 
             with urlopen(f"https://world.openfoodfacts.org/api/v0/product/\
-                {product.ean}.json") as response:
+                         {product.ean}.json") as response:
                 source = response.read()
 
             data = json.loads(source)
@@ -105,7 +103,7 @@ class View(object):
             except:
                 ingredients = "-Données indisponible-"
 
-            if product.substituted == True:
+            if product.substituted is True:
                 substituted = "Oui"
             substituted = "Non"
 
@@ -132,7 +130,7 @@ Ce produit est-il déjà substitué? {substituted}. \n")
             resp_sub = session.query(Product).filter(Product.id ==
                                                      product.substitute)
 
-            if product.substituted == True:
+            if product.substituted is True:
                 substituted = "Oui"
             substituted = "Non"
 
@@ -145,15 +143,21 @@ Son produit de substitution est {sub.name}")
         choice = View.menu(question, YesNo)
 
         # Maybe apply here an outside function : substitution_action()
-        # if choice == 1:
-        #   #Apply substitution's changes
-        #   #Apply product.substituted = True
-        #   #Apply to sub.id.substituted = False
-        # pass
+        if choice == 1:
+            # Apply substitution's changes
+            resp_prod.update()\
+             .where(Product.id == product_id)\
+             .values(substituted=True)
+
+            resp_prod.update()\
+             .where(Product.id == product.substitute)\
+             .values(substituted=False)
+
+            session.commit()
 
     def SubTbl():
         """This function will display the list of all substituted products in
-        the database, along with its matching substitute. 
+        the database, along with its matching substitute.
         Data a from real time database.
 
                  (Col 0)              (Col 1)
