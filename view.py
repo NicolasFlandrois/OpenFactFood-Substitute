@@ -35,25 +35,31 @@ class View(object):
         """skeleton menu's view for each query and set of question"""
 
         print(question)
+        print('(Appuyer sur: Q pour quitter ou R pour retour en arrière.)')
 
         for num, choice in enumerate(choices):
             print(str(num+1) + " : " + choice)
 
         while True:
             try:
-                choice = int(input())
-                if choice in range(1, len(choices)+1):
+                choice = input()
+                if choice.strip().lower() in ['r', 'q']:
+                    print(f'test1 You choose: {choice}')
                     break
                 else:
-                    raise
+                    choice = int(choice)
+                    if choice in range(1, len(choices)+1):
+                        print("Vous avez choisi: " + choices[choice-1] + "\n")
+                        break
+                    else:
+                        raise
             except:
                 print(
                     "Veuillez entrer un nombre entre 1 et " +
                     str(len(choices)) + "."
                     )
-        print("Vous avez choisi: " + choices[choice-1] + "\n")
+
         return choice
-        # Add possibility to: (R) Return a step back, or (Q) Quit
 
     def categories_list():
         """View of all categories."""
