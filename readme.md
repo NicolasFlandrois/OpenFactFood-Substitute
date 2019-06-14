@@ -15,7 +15,7 @@
 
 -------------------------------------------------------------
 
-***Setup recommandations***:
+***Setup recommendations***:
 - MySQL (or MariaDB)
 - Python 3.x
 
