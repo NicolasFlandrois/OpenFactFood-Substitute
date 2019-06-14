@@ -13,8 +13,8 @@ def clean():
     automaticaly detected according to the system OS you run it."""
     if platform.system() == "Windows":
         os.system("cls")
-    elif platform.system() == "Linux":
-        os.system("clear")
+    else:
+        os.system("clear") #This command will work on Linux and OSx systems.
 
 def main():
     """Main running function."""
