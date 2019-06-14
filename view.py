@@ -187,6 +187,6 @@ Son produit de substitution est {sub.name}")
                                                      product.substitute)
             for sub in resp_sub:
                 print(f"\n\
-{product.name} (Ce produit est non utilisé)\n\
-Ce produit est substitué par:\n\
-    {sub.name} (Ce produit est utilisé).\n")
+{product.name} (Non utilisé)\n\
+    Ce produit est substitué par:\n\
+    {sub.name} (Utilisé).\n")
