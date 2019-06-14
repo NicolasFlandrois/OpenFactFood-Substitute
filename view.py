@@ -35,10 +35,12 @@ class View(object):
         """skeleton menu's view for each query and set of question"""
 
         print(question)
-        print('(Appuyer sur: Q pour quitter ou R pour retour en arrière.)')
 
         for num, choice in enumerate(choices):
             print(str(num+1) + " : " + choice)
+
+
+        print('\n(Appuyer sur: Q pour QUITTER ou R pour RETOUR en arrière.)\n')
 
         while True:
             try:

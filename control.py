@@ -11,6 +11,8 @@ from view import View
 def clean():
     """This function will clear the terminal's screen. The command is 
     automaticaly detected according to the system OS you run it."""
+    print("(Appuyez sur Entrer pour continuer)")
+    input()
     if platform.system() == "Windows":
         os.system("cls")
     else:
@@ -21,12 +23,8 @@ def main():
     category_id = View.categories_list()
     prod_id = View.products_list(category_id)
     View.product_sheet(prod_id)
-    print("(Appuyez sur Entrer pour continuer)")
-    input()
     clean()
     View.prod_sub(prod_id)
-    print("(Appuyez sur Entrer pour continuer)")
-    input()
     clean()
     View.sub_tbl()
 
