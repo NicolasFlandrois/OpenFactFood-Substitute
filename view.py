@@ -159,7 +159,7 @@ Son produit de substitution est {sub.name}")
 
             session.commit()
 
-    def SubTbl():
+    def sub_tbl():
         """This function will display the list of all substituted products in
         the database, along with its matching substitute.
         Data a from real time database.
@@ -179,3 +179,14 @@ Son produit de substitution est {sub.name}")
 
         Display in column 0, all products for which Substituted == True.
         Display in column 1, all corresponding products to substitution."""
+        print("Liste des produits substitués en ce moment, et leurs substitus.")
+        resp_prod = session.query(Product).filter(Product.substituted == True)
+
+        for product in resp_prod:
+            resp_sub = session.query(Product).filter(Product.id ==
+                                                     product.substitute)
+            for sub in resp_sub:
+                print(f"\n\
+{product.name}\n\
+Ce produit est substitué par:\n\
+    {sub.name}\n")

@@ -13,6 +13,7 @@ def main():
     prod_id = View.products_list(category_id)
     View.product_sheet(prod_id)
     View.prod_sub(prod_id)
+    View.sub_tbl()
 
 
 if __name__ == '__main__':
