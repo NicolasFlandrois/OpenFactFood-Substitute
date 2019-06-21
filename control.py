@@ -19,7 +19,7 @@ def clean():
 
 def main():
     """Main running function."""
-    clean()
+    
     while True:
         responce = View.main_menu()
         if responce == "r":
@@ -96,5 +96,7 @@ def main():
 
 
 if __name__ == '__main__':
+    clean()
+    print("Bienvenue dans ce programme.")
     while True:
         main()
