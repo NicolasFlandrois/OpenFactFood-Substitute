@@ -55,12 +55,10 @@ R pour RETOUR au menu principal.)\n')
             try:
                 choice = input()
                 if choice.strip().lower() in ['r', 'q']:
-                    print(f'test1 You choose: {choice}') # Erase once program completed
                     break
                 else:
                     choice = int(choice)
                     if choice in range(1, len(choices)+1):
-                        print("Vous avez choisi: " + choices[choice-1] + "\n")
                         break
                     else:
                         raise
@@ -94,7 +92,12 @@ R pour RETOUR au menu principal.)\n')
             productList.append(product.name)
             product_ids.append(product.id)
 
-        return product_ids[View.menu(question, productList)-1]
+        choice = View.menu(question, productList)
+
+        if choice in ["r", "q"]:
+            return choice
+        else:
+            return product_ids[choice-1]
 
     def product_sheet(product_id):
         """View of a specific product's ID and informations. Product sheet."""
@@ -140,9 +143,9 @@ Ce produit est-il déjà substitué? {substituted}. \n")
 
     def sub_menu():
         """This function will display the sub menu of the program."""
-        question = "Entrez votre choix:"
-        choices = ["Substituer ce pruduit.",
-                   "Retour au menu principal."]
+        question = "Voulez-vous :"
+        choices = ["Substituer ce produit ?",
+                   "Retour au menu principal ?"]
         return View.menu(question, choices)
 
     def prod_sub(product_id):
@@ -176,6 +179,7 @@ Son produit de substitution est {sub.name}")
             sub.substituted = False
 
             session.commit()
+            print("La substitution a bien été enregistrer.")
 
     def sub_tbl():
         """This function will display the list of all substituted products in

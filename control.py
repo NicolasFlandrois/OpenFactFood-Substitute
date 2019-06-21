@@ -17,37 +17,58 @@ def clean():
     else:
         os.system("clear") #This command will work on Linux and OSx systems.
 
-def return_or_quit(responce):
-    """This function will either Quit the programm, or Return to main menu."""
-    if responce == 'r':
-        pass
-    elif responce == 'q':
-        exit()
-    else:
-        continue
-
 def main():
     """Main running function."""
-    print("Bienvenu dans ce programme.")
+    clean()
     while True:
         responce = View.main_menu()
-        clean()
-        if responce in ["r", "q"]:
-            return_or_quit(responce)
-        elif responce == 1:
+        if responce == "r":
+            break
+        elif responce == "q":
+            exit()
+        else:
+            pass
+        clean()  
+
+        if responce == 1:
             category_id = View.categories_list()
-            return_or_quit(category_id)
+            if category_id == "r":
+                break
+            elif category_id == "q":
+                exit()
+            else:
+                pass
+            clean()
+
             prod_id = View.products_list(category_id)
-            return_or_quit(prod_id)
+            if prod_id == "r":
+                break
+            elif prod_id == "q":
+                exit()
+            else:
+                pass
             clean()
             
             View.product_sheet(prod_id)
-            nextmove = input("(Appuyez sur Entrer pour continuer)")
-            return_or_quit(nextmove)
+            input("Appuyer sur Entrer pour continuer")
+            # nextmove = View.menu("Appuyez sur:", 
+            #                     ["Continuer",\
+            #                     "Retour Menu Principale", "Quitter"])
+            # if nextmove in ["r", 2]:
+            #     break
+            # elif nextmove in ["q", 3]:
+            #     exit()
+            # else:
+            #     pass
             clean()
             
             choice = View.sub_menu()
-            return_or_quit(choice)
+            if choice == "r":
+                break
+            elif choice == "q":
+                exit()
+            else:
+                pass
             clean()
             
             if choice == 1:
@@ -57,11 +78,23 @@ def main():
                 clean()
             else:
                 pass
-        else:
+
+        elif responce == 2:
             View.sub_tbl()
-            print("\n\n Retour au menu principale.")
+            sub_resp = View.menu("Question:", 
+                                ["Retour Menu Principale", "Quitter"])
+            if sub_resp in ["r", 1]:
+                pass
+            elif sub_resp in ["q", 2]:
+                exit()
+            else:
+                pass
             clean()
+        
+        else:
+            pass
 
 
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
