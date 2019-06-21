@@ -4,6 +4,7 @@
 # Author: Nicolas Flandrois
 
 import json
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, Table
 from sqlalchemy import create_engine, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,30 +12,20 @@ from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy_utils import create_database, database_exists
 
 from models import Product, Category
+from connection import connect
 
-from datetime import datetime
 
 startTime = datetime.now()
 print("Setup in progress. Please wait.")
 
 # 1/ create DB in mysql named: off1
-with open("config.json") as f:
-    config = json.load(f)
-
-username = config["username"]
-password = config["password"]
-host = config["host"]
-port = config["port"]
 
 if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
     create_database(f'mysql+pymysql://{username}:{password}@{host}/off1')
 
 # 2/connect to database: off1
 Base = declarative_base()
-engine = create_engine(
-    f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
-    {port}', echo=False, encoding='utf8', pool_recycle=60000,
-    pool_pre_ping=True)
+session = connect()
 
 # 3/ Create tables in DB, named: category & product
 metadata = MetaData(engine)
@@ -52,7 +43,7 @@ product = Table(
 category = Table(
     'category', metadata,
     Column('id', Integer, primary_key=True),
-    Column('label', String(50)),
+    Column('name', String(50)),
     )
 
 # 5/ creat all tables
@@ -62,7 +53,7 @@ metadata.create_all(engine)
 
 categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
-    engine.execute(category.insert(), label=i)
+    engine.execute(category.insert(), name=i)
 
 prods = [("3017620429484", "Nutella - Ferrero", 1, 2, False),
          ("3560070472888", "Pâte à tartiner - Carrefour Bio", 1, 1, True),

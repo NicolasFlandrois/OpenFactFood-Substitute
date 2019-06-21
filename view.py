@@ -5,58 +5,40 @@
 
 import json
 from urllib.request import urlopen
-
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine, update
 from models import Product, Category
+import os, platform
+from connection import connect
 
-with open("config.json") as f:
-    config = json.load(f)
+session = connect()
 
-username = config["username"]
-password = config["password"]
-host = config["host"]
-port = config["port"]
-
-engine = create_engine(
-    f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
-    {port}', echo=False, encoding='utf8', pool_recycle=60000,
-    pool_pre_ping=True)
-
-Session = sessionmaker(bind=engine)
-session = Session()
+def clean():
+    """This function will clear the terminal's screen. The command is 
+    automaticaly detected according to the system OS you run it."""
+    os.system("cls" if platform.system() == "Windows" else "clear")
 
 
 class View(object):
-    """Views to display various infos needed through software's cicles."""
+    """Views to display various infos needed through software's cycles."""
 
-    def main_menu():
-        """This function will display the main menu of the program."""
-        question = "Entrez votre choix:"
-        choices = ["Naviguer vers un produit.",
-                   "Afficher la liste de tous les produits \
-substitués en ce moment."]
-        return View.menu(question, choices)
-
-    def menu(question, choices):
+    @static_method
+    def menu(question, choices=None):
         """skeleton menu's view for each query and set of question."""
-
+        clean()
         print(question)
-
-        for num, choice in enumerate(choices):
-            print(str(num+1) + " : " + choice)
-
-
+        if choices:
+            for num, choice in enumerate(choices):
+                print(str(num+1) + " : " + choice)
         print('\n(Appuyer sur: Q pour QUITTER ou \
 R pour RETOUR au menu principal.)\n')
-
         while True:
             try:
                 choice = input()
                 if choice.strip().lower() in ['r', 'q']:
                     break
-                else:
+                elif choices:
                     choice = int(choice)
                     if choice in range(1, len(choices)+1):
                         break
@@ -70,35 +52,32 @@ R pour RETOUR au menu principal.)\n')
 
         return choice
 
-    def categories_list():
-        """View of all categories."""
-        question = "Veuillez choisir une catégorie: "
-        categoryList = []
-        categoryQuery = session.query(Category).all()
+    main_view = lambda: View.menu(
+        "Entrez votre choix:", [
+            "Naviguer vers un produit.",
+            "Afficher la liste de tous les produits substitués en ce moment."
+        ]
+    )
 
-        for choice in categoryQuery:
-            categoryList.append(str(choice))
+    cats_view = lambda: View.menu(
+        "Veuillez choisir une catégorie: ", [
+            (cat.id, cat.name) for cat in session.query(Category).all()
+        ]
+    )
 
-        return View.menu(question, categoryList)
+    prods_view = lambda cat_id: View.menu(
+        "Veuillez choisir un produit : ", [
+            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
+        ]
+    )
 
-    def products_list(cat_id):
-        """View of all products within a category."""
-        question = "Veuillez choisir un produit : "
-        productList = []
-        product_ids = []
-        response = session.query(Product).filter(Product.category == cat_id)
+    prod_view = lambda prod_id: View.menu(
+        "Veuillez choisir un produit : ", [
+            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
+        ]
+    )
 
-        for product in response:
-            productList.append(product.name)
-            product_ids.append(product.id)
-
-        choice = View.menu(question, productList)
-
-        if choice in ["r", "q"]:
-            return choice
-        else:
-            return product_ids[choice-1]
-
+    @static_method
     def product_sheet(product_id):
         """View of a specific product's ID and informations. Product sheet."""
         response = session.query(Product).filter(Product.id == product_id)
@@ -139,8 +118,9 @@ Liste d'ingrédients:\n\
 \n\
 Son substitue est:                {sub.name}. \n\
 Ce produit est-il déjà substitué? {substituted}. \n")
-                return
+                input("Appuyez sur une touche pour continuer...")
 
+    @static_method
     def sub_menu():
         """This function will display the sub menu of the program."""
         question = "Voulez-vous :"
@@ -148,6 +128,7 @@ Ce produit est-il déjà substitué? {substituted}. \n")
                    "Retour au menu principal ?"]
         return View.menu(question, choices)
 
+    @static_method
     def prod_sub(product_id):
         """View of coresponding product and it's substitute."""
         question = "Confirmez-vous la substitution de ce produit? "
@@ -181,6 +162,7 @@ Son produit de substitution est {sub.name}")
             session.commit()
             print("La substitution a bien été enregistrer.")
 
+    @static_method
     def sub_tbl():
         """This function will display the list of all substituted products in
         the database, along with its matching substitute.
@@ -212,3 +194,5 @@ Son produit de substitution est {sub.name}")
 {product.name} (Non utilisé)\n\
     Ce produit est substitué par:\n\
     {sub.name} (Utilisé).\n")
+        input("Appuyez sur une touche pour continuer...")
+
