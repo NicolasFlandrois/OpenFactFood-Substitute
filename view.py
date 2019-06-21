@@ -31,8 +31,16 @@ session = Session()
 class View(object):
     """Views to display various infos needed through software's cicles."""
 
+    def main_menu():
+        """This function will display the main menu of the program."""
+        question = "Entrez votre choix:"
+        choices = ["Naviguer vers un produit.",
+                   "Afficher la liste de tous les produits \
+substitués en ce moment."]
+        return View.menu(question, choices)
+
     def menu(question, choices):
-        """skeleton menu's view for each query and set of question"""
+        """skeleton menu's view for each query and set of question."""
 
         print(question)
 
@@ -40,13 +48,14 @@ class View(object):
             print(str(num+1) + " : " + choice)
 
 
-        print('\n(Appuyer sur: Q pour QUITTER ou R pour RETOUR en arrière.)\n')
+        print('\n(Appuyer sur: Q pour QUITTER ou \
+R pour RETOUR au menu principal.)\n')
 
         while True:
             try:
                 choice = input()
                 if choice.strip().lower() in ['r', 'q']:
-                    print(f'test1 You choose: {choice}')
+                    print(f'test1 You choose: {choice}') # Erase once program completed
                     break
                 else:
                     choice = int(choice)
@@ -129,9 +138,16 @@ Son substitue est:                {sub.name}. \n\
 Ce produit est-il déjà substitué? {substituted}. \n")
                 return
 
+    def sub_menu():
+        """This function will display the sub menu of the program."""
+        question = "Entrez votre choix:"
+        choices = ["Substituer ce pruduit.",
+                   "Retour au menu principal."]
+        return View.menu(question, choices)
+
     def prod_sub(product_id):
         """View of coresponding product and it's substitute."""
-        question = "Voulez vous substituer ce produit? "
+        question = "Confirmez-vous la substitution de ce produit? "
         YesNo = ("Oui", "Non")
         resp_prod = session.query(Product).filter(Product.id == product_id)
 
