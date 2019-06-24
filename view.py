@@ -16,7 +16,8 @@ session = connect()
 
 def clean():
     """This function will clear the terminal's screen. The command is 
-    automaticaly detected according to the system OS you run it."""
+    automaticaly detected according to the system OS you run it.
+    Compatible with Windows, OSx, and Linux."""
     os.system("cls" if platform.system() == "Windows" else "clear")
 
 
