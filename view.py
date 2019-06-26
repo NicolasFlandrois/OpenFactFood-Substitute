@@ -24,7 +24,7 @@ def clean():
 class View(object):
     """Views to display various infos needed through software's cycles."""
 
-    @static_method
+    @staticmethod
     def menu(question, choices=None):
         """skeleton menu's view for each query and set of question."""
         clean()
@@ -52,44 +52,12 @@ R pour RETOUR au menu principal.)\n')
                     )
 
         return choice
-
-    main_view = lambda: View.menu(
-        "Entrez votre choix:", [
-            "Naviguer vers un produit.",
-            "Afficher la liste de tous les produits substitués en ce moment."
-        ]
-    )
-
-    cats_view = lambda: View.menu(
-        "Veuillez choisir une catégorie: ", [
-            (cat.id, cat.name) for cat in session.query(Category).all()
-        ]
-    )
-
-    prods_view = lambda cat_id: View.menu(
-        "Veuillez choisir un produit : ", [
-            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
-        ]
-    )
-
-    prod_view = lambda prod_id: View.menu(
-        "Veuillez choisir un produit : ", [
-            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
-        ]
-    )
-
-    @static_method
-    def product_sheet(product_id):
-        """View of a specific product's ID and informations. Product sheet."""
-        response = session.query(Product).filter(Product.id == product_id)
-
-        for product in response:
-            resp_sub = session.query(Product).filter(Product.id ==
-                                                     product.substitute)
-
-            with urlopen(f"https://world.openfoodfacts.org/api/v0/product/\
-                         {product.ean}.json") as response:
-                source = response.read()
+    
+    @staticmethod
+    def get_off_json(ean):
+        """Get info from Open Fact Food (off) URL's Json API."""
+        with urlopen(f"https://world.openfoodfacts.org/api/v0/product/{ean}.json") as response:
+            source = response.read()
 
             data = json.loads(source)
 
@@ -103,97 +71,154 @@ R pour RETOUR au menu principal.)\n')
             except:
                 ingredients = "-Données indisponible-"
 
-            if product.substituted is True:
-                substituted = "Oui"
-            else:
-                substituted = "Non"
+            return quantity, ingredients
 
-            for sub in resp_sub:
-                print(f"\
-Le produit selectionné est:       {product.name}. \n\
-EAN-13:                           {product.ean}. \n\
+    @staticmethod
+    def status(substituted):
+        """Translate the Substituted status True/False into a Yes/No string."""
+        return "Oui" if substituted is True  else "Non"
+
+    @staticmethod
+    def sheet_structure(name, ean, quantity, ingredients, subname, substatus):
+        """Returns the display for the product's sheet."""
+        print(
+            f"Le produit selectionné est:       {name}. \n\
+EAN-13:                           {ean}. \n\
 Poids:                            {quantity}. \n\
 \n\
 Liste d'ingrédients:\n\
-{ingredients}. \n\
+                    {ingredients}. \n\
 \n\
-Son substitue est:                {sub.name}. \n\
-Ce produit est-il déjà substitué? {substituted}. \n")
-                input("Appuyez sur une touche pour continuer...")
+Son substitue est:                {subname}. \n\
+Ce produit est-il déjà substitué? {substatus}. \n"
+            )
 
-    @static_method
-    def sub_menu():
-        """This function will display the sub menu of the program."""
-        question = "Voulez-vous :"
-        choices = ["Substituer ce produit ?",
-                   "Retour au menu principal ?"]
-        return View.menu(question, choices)
+    @staticmethod
+    def substitution(product_id):
+        """Action to apply Substitution"""
+        get_prod(product_id).substituted = True
+        get_prod(product_id).substitute.substituted = False
+        session.commit()
+        return "La substitution a bien été enregistrer."
 
-    @static_method
-    def prod_sub(product_id):
-        """View of coresponding product and it's substitute."""
-        question = "Confirmez-vous la substitution de ce produit? "
-        YesNo = ("Oui", "Non")
-        resp_prod = session.query(Product).filter(Product.id == product_id)
+    # @staticmethod
+    # def get_allsub():
+    #     return session.query(Product).filter(Product.substituted == True)
 
-        for product in resp_prod:
-            resp_sub = session.query(Product).filter(Product.id ==
-                                                     product.substitute)
-
-            if product.substituted is True:
-                substituted = "Oui"
-            else:
-                substituted = "Non"
-
-            for sub in resp_sub:
-                print(f"\
-Produit original: {product.name} \n\
-Ce produit a-t-il été déjà substitué? {substituted} \n\
-Son produit de substitution est {sub.name}")
-
-        choice = View.menu(question, YesNo)
-
-        # Maybe apply here an outside function : substitution_action()
-        if choice == 1:
-            # Apply substitution's changes
-            product.substituted = True
-
-            sub.substituted = False
-
-            session.commit()
-            print("La substitution a bien été enregistrer.")
-
-    @static_method
-    def sub_tbl():
+    @staticmethod
+    def sub_tbl_structure(prods):
         """This function will display the list of all substituted products in
         the database, along with its matching substitute.
-        Data a from real time database.
-
-                 (Col 0)              (Col 1)
-        +----------------------+--------------------+
-        |Subststituted product | Current Substitute |
-        +======================+====================+
-        | Product A   (True)   | Prod Sub-A (False) |
-        +----------------------+--------------------+
-        | Product B            | Product Sub-B      |
-        +----------------------+--------------------+
-        | Product C            | Product Sub-C      |
-        +----------------------+--------------------+
-        | Product etc...       | Sub - etc...       |
-        +----------------------+--------------------+
-
-        Display in column 0, all products for which Substituted == True.
-        Display in column 1, all corresponding products to substitution."""
-        print("Liste des produits substitués en ce moment, et leurs substitus.")
-        resp_prod = session.query(Product).filter(Product.substituted == True)
-
-        for product in resp_prod:
-            resp_sub = session.query(Product).filter(Product.id ==
-                                                     product.substitute)
-            for sub in resp_sub:
-                print(f"\n\
-{product.name} (Non utilisé)\n\
+        Data a from real time database."""
+        print("Liste des produits substitués en ce moment, et leurs substitus.\n")
+        for prod in prods:
+            print(f"\
+{prod.name} (Non utilisé)\n\
     Ce produit est substitué par:\n\
-    {sub.name} (Utilisé).\n")
-        input("Appuyez sur une touche pour continuer...")
+    {prod.substitue.name} (Utilisé).\n"
+    )
+
+
+    # Shows Main Menu (Beginning Menu)
+    main_view = lambda: View.menu(
+        "Entrez votre choix:", [
+            "Naviguer vers un produit.",
+            "Afficher la liste de tous les produits substitués en ce moment."
+        ]
+    )
+
+    # Shows a list of all available catgories, and returns user's category's choice
+    cats_view = lambda: View.menu(
+        "Veuillez choisir une catégorie: ", [
+            (cat.id, cat.name) for cat in session.query(Category).all()
+        ]
+    )
+
+    # Shows the list of all products within this category, and returns user's product's choice
+    prods_view = lambda cat_id: View.menu(
+        "Veuillez choisir un type de produits : ", [
+            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
+        ]
+    )
+
+    prod_view = lambda prod_id: View.sheet_structure(
+            str(prod.name for prod in session.query(Product).filter(Product.category == prod_id)),
+            str(prod.ean for prod in session.query(Product).filter(Product.category == prod_id)),
+            str(View.get_off_json(
+                prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[0]),
+            str(View.get_off_json(
+                prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[1]),
+            str(prod.substitute.name for prod in session.query(Product).filter(Product.category == prod_id)),
+            str(View.status(
+                prod.substituted for prod in session.query(Product).filter(Product.category == prod_id))
+            )
+        )                
+
+    submenu_view = lambda: View.menu(
+                                    "Voulez-vous :", [
+                                        "Substituer ce produit ?",
+                                        "Retour au menu principal ?"
+                                       ]
+                                    )
+
+    sub_tbl = lambda: View.sub_tbl_structure(
+        prod for products in session.query(Product).filter(Product.substituted == True)
+        )
+
+
+# TEST
+# View.main_view() # ok
+# View.submenu_view() # ok
+
+# View.cats_view()
+    # Issue: Veuillez choisir une catégorie: 
+    # Traceback (most recent call last):
+    #   File "view.py", line 167, in <module>
+    #     View.cats_view()
+    #   File "view.py", line 137, in <lambda>
+    #     (cat.id, cat.name) for cat in session.query(Category).all()
+    #   File "view.py", line 34, in menu
+    #     print(str(num+1) + " : " + choice)
+    # TypeError: can only concatenate str (not "tuple") to str
+
+# View.prods_view(2)
+    # Veuillez choisir un type de produits : 
+    # Traceback (most recent call last):
+    #   File "view.py", line 176, in <module>
+    #     View.prods_view(2)
+    #   File "view.py", line 138, in <lambda>
+    #     (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
+    #   File "view.py", line 34, in menu
+    #     print(str(num+1) + " : " + choice)
+    # TypeError: can only concatenate str (not "tuple") to str
+
+# View.prod_view(2)
+    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d6f0c0>
+    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d740c0>
+    # -Données indisponible-
+    # -Données indisponible-
+    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d890c0>
+    # Non
+    # Le produit selectionné est:       None. 
+    # EAN-13:                           None. 
+    # Poids:                            None. 
+
+    # Liste d'ingrédients:
+    #                     None. 
+
+    # Son substitue est:                None. 
+    # Ce produit est-il déjà substitué? None.
+
+# View.sub_tbl()
+    # Liste des produits substitués en ce moment, et leurs substitus.
+    # Traceback (most recent call last):
+    #   File "view.py", line 207, in <module>
+    #     View.sub_tbl()
+    #   File "view.py", line 161, in <lambda>
+    #     sub_tbl = lambda: View.sub_tbl_structure(prod for products in session.query(Product).filter(Product.substituted == True))
+    #   File "view.py", line 114, in sub_tbl_structure
+    #     for prod in prods:
+    #   File "view.py", line 161, in <genexpr>
+    #     sub_tbl = lambda: View.sub_tbl_structure(prod for products in session.query(Product).filter(Product.substituted == True))
+    # NameError: name 'prod' is not defined
 
