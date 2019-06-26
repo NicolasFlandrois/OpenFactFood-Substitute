@@ -53,7 +53,7 @@ product = Table(
 category = Table(
     'category', metadata,
     Column('id', Integer, primary_key=True),
-    Column('label', String(50)),
+    Column('name', String(50)),
     )
 
 # 5/ creat all tables
@@ -63,7 +63,7 @@ metadata.create_all(engine)
 
 categories = ("pâte à tartiner", "confiture", "sirop")
 for i in categories:
-    engine.execute(category.insert(), label=i)
+    engine.execute(category.insert(), name=i)
 
 prods = [("3017620429484", "Nutella - Ferrero", 1, 2, False),
          ("3560070472888", "Pâte à tartiner - Carrefour Bio", 1, 1, True),
