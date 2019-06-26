@@ -55,10 +55,9 @@ R pour RETOUR au menu principal.)\n')
     
     @staticmethod
     def get_off_json(ean):
-        """Get info from Open Fact Food (off) URL's Json API."""
+        """Get info from Open Fact Food (off) URL's Json API. Returns a tuple."""
         with urlopen(f"https://world.openfoodfacts.org/api/v0/product/{ean}.json") as response:
             source = response.read()
-
             data = json.loads(source)
 
             try:
@@ -71,7 +70,7 @@ R pour RETOUR au menu principal.)\n')
             except:
                 ingredients = "-Données indisponible-"
 
-            return quantity, ingredients
+            return quantity, ingredients # returns a tuple
 
     @staticmethod
     def status(substituted):
@@ -106,17 +105,14 @@ Ce produit est-il déjà substitué? {substatus}. \n"
     #     return session.query(Product).filter(Product.substituted == True)
 
     @staticmethod
-    def sub_tbl_structure(prods):
+    def sub_tbl_structure(prod_name, sub_name):
         """This function will display the list of all substituted products in
         the database, along with its matching substitute.
         Data a from real time database."""
-        print("Liste des produits substitués en ce moment, et leurs substitus.\n")
-        for prod in prods:
-            print(f"\
-{prod.name} (Non utilisé)\n\
+        # print("Liste des produits substitués en ce moment, et leurs substitus.\n")
+        return f"{prod_name} (Non utilisé)\n\
     Ce produit est substitué par:\n\
-    {prod.substitue.name} (Utilisé).\n"
-    )
+    {sub_name} (Utilisé).\n"
 
 
     # Shows Main Menu (Beginning Menu)
@@ -142,14 +138,14 @@ Ce produit est-il déjà substitué? {substatus}. \n"
     )
 
     prod_view = lambda prod_id: View.sheet_structure(
-            str(prod.name for prod in session.query(Product).filter(Product.category == prod_id)),
-            str(prod.ean for prod in session.query(Product).filter(Product.category == prod_id)),
-            str(View.get_off_json(
+            (str(prod.name) for prod in session.query(Product).filter(Product.category == prod_id)),
+            (str(prod.ean) for prod in session.query(Product).filter(Product.category == prod_id)),
+            (View.get_off_json(
                 prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[0]),
-            str(View.get_off_json(
+            (View.get_off_json(
                 prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[1]),
-            str(prod.substitute.name for prod in session.query(Product).filter(Product.category == prod_id)),
-            str(View.status(
+            (str(prod.substitute.name) for prod in session.query(Product).filter(Product.category == prod_id)),
+            (View.status(
                 prod.substituted for prod in session.query(Product).filter(Product.category == prod_id))
             )
         )                
@@ -161,10 +157,12 @@ Ce produit est-il déjà substitué? {substatus}. \n"
                                        ]
                                     )
 
-    sub_tbl = lambda: View.sub_tbl_structure(
-        prod for products in session.query(Product).filter(Product.substituted == True)
-        )
+    prod_and_sub = ((prod.name, prod.substitue.name) for prods in session.query(Product).filter(Product.substituted == True))
 
+    sub_tbl = lambda: View.sub_tbl_structure(
+                View.prod_and_sub[0],
+                View.prod_and_sub[1]
+            ) #A retravailler
 
 # TEST
 # View.main_view() # ok
@@ -209,16 +207,19 @@ Ce produit est-il déjà substitué? {substatus}. \n"
     # Son substitue est:                None. 
     # Ce produit est-il déjà substitué? None.
 
-# View.sub_tbl()
-    # Liste des produits substitués en ce moment, et leurs substitus.
+View.sub_tbl()
+    # $ python view.py
     # Traceback (most recent call last):
-    #   File "view.py", line 207, in <module>
+    #   File "view.py", line 210, in <module>
     #     View.sub_tbl()
-    #   File "view.py", line 161, in <lambda>
-    #     sub_tbl = lambda: View.sub_tbl_structure(prod for products in session.query(Product).filter(Product.substituted == True))
-    #   File "view.py", line 114, in sub_tbl_structure
-    #     for prod in prods:
-    #   File "view.py", line 161, in <genexpr>
-    #     sub_tbl = lambda: View.sub_tbl_structure(prod for products in session.query(Product).filter(Product.substituted == True))
-    # NameError: name 'prod' is not defined
-
+    #   File "view.py", line 163, in <lambda>
+    #     View.prod_and_sub()[0],
+    # TypeError: 'generator' object is not callable
+    # 
+    # $ python view.py
+    # Traceback (most recent call last):
+    #   File "view.py", line 210, in <module>
+    #     View.sub_tbl()
+    #   File "view.py", line 163, in <lambda>
+    #     View.prod_and_sub[0],
+    # TypeError: 'generator' object is not subscriptable
