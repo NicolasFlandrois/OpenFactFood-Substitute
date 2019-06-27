@@ -100,10 +100,6 @@ Ce produit est-il déjà substitué? {substatus}. \n"
         session.commit()
         return "La substitution a bien été enregistrer."
 
-    # @staticmethod
-    # def get_allsub():
-    #     return session.query(Product).filter(Product.substituted == True)
-
     @staticmethod
     def sub_tbl_structure(prod_name, sub_name):
         """This function will display the list of all substituted products in
@@ -137,19 +133,22 @@ Ce produit est-il déjà substitué? {substatus}. \n"
         ]
     )
 
+    # Product's Sheet
     product_call = lambda prod_id: session.query(Product).filter(Product.category == prod_id)
     
     def product2sheet(prod_id):
-        [label for label in View.product_call(prod_id)]
+        prod_details = []
+        for label in View.product_call(prod_id):
+            prod_details.append(label)
+        return prod_details
 
-
-    prod_view = lambda prod: View.sheet_structure(
-                    prod.name,
-                    prod.ean,
-                    (View.get_off_json(prod.ean)[0]),
-                    (View.get_off_json(prod.ean)[1]),
-                    prod.substitute.name,
-                    (View.status(prod.substituted))
+    prod_view = lambda prod_id: View.sheet_structure(
+                    View.product2sheet(prod_id)[2],
+                    View.product2sheet(prod_id)[1],
+                    (View.get_off_json(View.product2sheet(prod_id)[1])[0]),
+                    (View.get_off_json(View.product2sheet(prod_id)[1])[1]),
+                    View.product_call(View.product2sheet(prod_id)[4]),
+                    (View.status(View.product2sheet(prod_id)[5]))
                 )
 
     submenu_view = lambda: View.menu(
@@ -159,18 +158,13 @@ Ce produit est-il déjà substitué? {substatus}. \n"
                                        ]
                                     )
 
-    # Return a list of Tuple with Names and Sbustitute's ID
-    sub_prodnames_and_subid = [(prod.name, prod.substitute) for prod in session.query(Product).filter(Product.substituted == True)]
+    # Preparing lists for substitution table
+    sub_prodnames = [prod.name for prod in session.query(Product).filter(Product.substituted == True)]
 
-    sub_prodnames = [prodid[0] for prodid in sub_prodnames_and_subid]
-    sub_subid = [prodid[1] for prodid in sub_prodnames_and_subid]
+    sub_subid = [prod.substitute for prod in session.query(Product).filter(Product.substituted == True)]
 
-    sub_subnames_list = [[prod.name for prod in session.query(Product).filter(Product.id == subid)] 
+    sub_subnames = [[prod.name for prod in session.query(Product).filter(Product.id == subid)] 
                             for subid in sub_subid]
-
-    list_flattner = lambda l: [item for sublist in l for item in sublist]
-
-    sub_subnames = list_flattner(sub_subnames_list)
 
     sub_prodnames_subnames = list(zip(sub_prodnames, sub_subnames))
 
@@ -188,22 +182,7 @@ Ce produit est-il déjà substitué? {substatus}. \n"
 # View.cats_view() # OK
 # View.prods_view(2) # OK
 
-print(View.product2sheet(2))
+# print(View.product2sheet(2))
 
-# View.prod_view(View.product2sheet(2))
-    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d6f0c0>
-    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d740c0>
-    # -Données indisponible-
-    # -Données indisponible-
-    # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d890c0>
-    # Non
-    # Le produit selectionné est:       None. 
-    # EAN-13:                           None. 
-    # Poids:                            None. 
-
-    # Liste d'ingrédients:
-    #                     None. 
-
-    # Son substitue est:                None. 
-    # Ce produit est-il déjà substitué? None.
-
+View.prod_view(2)
+# Issues
