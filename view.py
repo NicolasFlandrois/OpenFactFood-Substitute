@@ -126,29 +126,31 @@ Ce produit est-il déjà substitué? {substatus}. \n"
     # Shows a list of all available catgories, and returns user's category's choice
     cats_view = lambda: View.menu(
         "Veuillez choisir une catégorie: ", [
-            (cat.id, cat.name) for cat in session.query(Category).all()
+            cat.name for cat in session.query(Category).all()
         ]
     )
 
     # Shows the list of all products within this category, and returns user's product's choice
     prods_view = lambda cat_id: View.menu(
         "Veuillez choisir un type de produits : ", [
-            (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
+            prod.name for prod in session.query(Product).filter(Product.category == cat_id)
         ]
     )
 
-    prod_view = lambda prod_id: View.sheet_structure(
-            (str(prod.name) for prod in session.query(Product).filter(Product.category == prod_id)),
-            (str(prod.ean) for prod in session.query(Product).filter(Product.category == prod_id)),
-            (View.get_off_json(
-                prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[0]),
-            (View.get_off_json(
-                prod.ean for prod in session.query(Product).filter(Product.category == prod_id))[1]),
-            (str(prod.substitute.name) for prod in session.query(Product).filter(Product.category == prod_id)),
-            (View.status(
-                prod.substituted for prod in session.query(Product).filter(Product.category == prod_id))
-            )
-        )                
+    product_call = lambda prod_id: session.query(Product).filter(Product.category == prod_id)
+    
+    def product2sheet(prod_id):
+        [label for label in View.product_call(prod_id)]
+
+
+    prod_view = lambda prod: View.sheet_structure(
+                    prod.name,
+                    prod.ean,
+                    (View.get_off_json(prod.ean)[0]),
+                    (View.get_off_json(prod.ean)[1]),
+                    prod.substitute.name,
+                    (View.status(prod.substituted))
+                )
 
     submenu_view = lambda: View.menu(
                                     "Voulez-vous :", [
@@ -157,40 +159,38 @@ Ce produit est-il déjà substitué? {substatus}. \n"
                                        ]
                                     )
 
-    prod_and_sub = ((prod.name, prod.substitue.name) for prods in session.query(Product).filter(Product.substituted == True))
+    # Return a list of Tuple with Names and Sbustitute's ID
+    sub_prodnames_and_subid = [(prod.name, prod.substitute) for prod in session.query(Product).filter(Product.substituted == True)]
 
-    sub_tbl = lambda: View.sub_tbl_structure(
-                View.prod_and_sub[0],
-                View.prod_and_sub[1]
-            ) #A retravailler
+    sub_prodnames = [prodid[0] for prodid in sub_prodnames_and_subid]
+    sub_subid = [prodid[1] for prodid in sub_prodnames_and_subid]
+
+    sub_subnames_list = [[prod.name for prod in session.query(Product).filter(Product.id == subid)] 
+                            for subid in sub_subid]
+
+    list_flattner = lambda l: [item for sublist in l for item in sublist]
+
+    sub_subnames = list_flattner(sub_subnames_list)
+
+    sub_prodnames_subnames = list(zip(sub_prodnames, sub_subnames))
+
+    @staticmethod
+    def sub_tbl (prod_sub_names:list):
+        print("Liste des produits substitués : ")
+        for item in prod_sub_names:
+            print(View.sub_tbl_structure(item[0], item[1]))
 
 # TEST
 # View.main_view() # ok
 # View.submenu_view() # ok
+# print(View.sub_prodnames_subnames) # OK
+# View.sub_tbl(View.sub_prodnames_subnames) # OK
+# View.cats_view() # OK
+# View.prods_view(2) # OK
 
-# View.cats_view()
-    # Issue: Veuillez choisir une catégorie: 
-    # Traceback (most recent call last):
-    #   File "view.py", line 167, in <module>
-    #     View.cats_view()
-    #   File "view.py", line 137, in <lambda>
-    #     (cat.id, cat.name) for cat in session.query(Category).all()
-    #   File "view.py", line 34, in menu
-    #     print(str(num+1) + " : " + choice)
-    # TypeError: can only concatenate str (not "tuple") to str
+print(View.product2sheet(2))
 
-# View.prods_view(2)
-    # Veuillez choisir un type de produits : 
-    # Traceback (most recent call last):
-    #   File "view.py", line 176, in <module>
-    #     View.prods_view(2)
-    #   File "view.py", line 138, in <lambda>
-    #     (prod.id, prod.name) for prod in session.query(Product).filter(Product.category == cat_id)
-    #   File "view.py", line 34, in menu
-    #     print(str(num+1) + " : " + choice)
-    # TypeError: can only concatenate str (not "tuple") to str
-
-# View.prod_view(2)
+# View.prod_view(View.product2sheet(2))
     # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d6f0c0>
     # <generator object View.<lambda>.<locals>.<genexpr> at 0x7f3f53d740c0>
     # -Données indisponible-
@@ -207,19 +207,3 @@ Ce produit est-il déjà substitué? {substatus}. \n"
     # Son substitue est:                None. 
     # Ce produit est-il déjà substitué? None.
 
-View.sub_tbl()
-    # $ python view.py
-    # Traceback (most recent call last):
-    #   File "view.py", line 210, in <module>
-    #     View.sub_tbl()
-    #   File "view.py", line 163, in <lambda>
-    #     View.prod_and_sub()[0],
-    # TypeError: 'generator' object is not callable
-    # 
-    # $ python view.py
-    # Traceback (most recent call last):
-    #   File "view.py", line 210, in <module>
-    #     View.sub_tbl()
-    #   File "view.py", line 163, in <lambda>
-    #     View.prod_and_sub[0],
-    # TypeError: 'generator' object is not subscriptable
