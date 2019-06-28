@@ -11,6 +11,7 @@ from sqlalchemy import create_engine, update
 from models import Product, Category
 import os, platform
 from connection import connect
+import time
 
 session = connect()
 
@@ -33,7 +34,7 @@ class View(object):
             for num, choice in enumerate(choices):
                 print(str(num+1) + " : " + choice)
         print('\n(Appuyer sur: Q pour QUITTER ou \
-R pour RETOUR au menu principal.)\n')
+R pour RETOUR au menu précédent.)\n')
         while True:
             try:
                 choice = input()
@@ -75,7 +76,7 @@ R pour RETOUR au menu principal.)\n')
     @staticmethod
     def status(substituted:bool):
         """Translate the Substituted status True/False into a Yes/No string."""
-        return "Oui" if substituted is True  else "Non"
+        return "Non" if substituted == False else "Oui" # Issue HERE, returns only "Oui"
 
     @staticmethod
     def sheet_view(prod_id:int):
@@ -96,16 +97,32 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
         input("\n\nAppuyez sur Entrer pour continuer.")
 
     @staticmethod
-    def substitution(product_id:bool): # Issues HERE Query changes PB
-        """Action to apply Substitution"""
+    def substitution(prod_id:int):
+        """Action to apply Substitution. 
+        If not substituted, then apply substitution.
+        If already substituted, then reverse substitution."""
         choice = View.submenu_view()
+        clean()
         if choice == 1:
-            View.product_call(product_id).substituted = True
-            View.product_call(product_id).substitute.substituted = False
-            session.commit()
+            resp_prod = session.query(Product).filter(Product.id == prod_id)
+            for prod in resp_prod:
+                resp_sub = session.query(Product).filter(Product.id == prod.substitute)
+                if not prod.substituted:
+                    for sub in resp_sub:
+                        prod.substituted = True
+                        sub.substituted = False
+                        session.commit()
+                else:
+                    for sub in resp_sub:
+                        prod.substituted = False
+                        sub.substituted = True
+                        session.commit()
+
             print("La substitution a bien été enregistrer.")
+            time.sleep(3)
         else:
             print("Aucune substitution n'a été éffectuée.")
+            time.sleep(3)
 
     @staticmethod
     def sub_tbl_structure(prod_name:str, sub_name:str):
@@ -158,7 +175,7 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
     # Submenu View To choice either we shall substitute or not this product
     submenu_view = lambda: View.menu(
                                     "Voulez-vous :", [
-                                        "Substituer ce produit ?",
+                                        "Echanger la substitution de ces produits ?",
                                         "Retour au menu principal ?"
                                        ]
                                     )
