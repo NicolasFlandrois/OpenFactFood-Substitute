@@ -66,12 +66,12 @@ R pour RETOUR au menu précédent.)\n')
             try:
                 quantity = data['product']['quantity']
             except:
-                quantity = "-Données indisponible-"
+                quantity = "-Données indisponibles-"
 
             try:
                 ingredients = data['product']['ingredients_text_fr']
             except:
-                ingredients = "-Données indisponible-"
+                ingredients = "-Données indisponibles-"
 
             return quantity, ingredients # returns a tuple
 
