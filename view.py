@@ -175,11 +175,11 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
 
     # Submenu View To choice either we shall substitute or not this product
     submenu_view = lambda: View.menu(
-                                    "Voulez-vous :", [
-                                        "Echanger la substitution de ces produits ?",
-                                        "Retour au menu principal ?"
-                                       ]
-                                    )
+                    "Voulez-vous échanger la substitution de ces produits ? :", [
+                        "Oui. Je souhaite échanger la substitution de ces produits ?",
+                        "Non. Ne Rien Changer. La situation actuel me convient !"
+                       ]
+                    )
 
     # View of substitution table
     @staticmethod
