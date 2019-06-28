@@ -1,32 +1,32 @@
 #!/usr/bin/python3.7
 # UTF8
-# Date: 
+# Date: Fri 28 Jun 2019 16:57:52 CEST
 # Author: Nicolas Flandrois
 
 import json
 from urllib.request import urlopen
-
 import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine, update
 
+
 def connect():
 
-	with open("config.json") as f:
+    with open("config.json") as f:
 
-		config = json.load(f)
+        config = json.load(f)
 
-		username = config["username"]
-		password = config["password"]
-		host = config["host"]
-		port = config["port"]
+        username = config["username"]
+        password = config["password"]
+        host = config["host"]
+        port = config["port"]
 
-		engine = create_engine(
-			f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
-			{port}', echo=False, encoding='utf8', pool_recycle=60000,
-			pool_pre_ping=True)
+        engine = create_engine(
+            f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
+            {port}', echo=False, encoding='utf8', pool_recycle=60000,
+            pool_pre_ping=True)
 
-		Session = sessionmaker(bind=engine)
-		session = Session()
+        Session = sessionmaker(bind=engine)
+        session = Session()
 
-		return session
+        return session
