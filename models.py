@@ -13,6 +13,7 @@ session = connect()
 
 Base = declarative_base()
 
+
 class Product(Base):
     """docstring for Products"""
     __tablename__ = "product"
