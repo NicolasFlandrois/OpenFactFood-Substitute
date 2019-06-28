@@ -73,31 +73,7 @@ R pour RETOUR au menu précédent.)\n')
             except:
                 ingredients = "-Données indisponibles-"
 
-            return quantity, ingredients # returns a tuple
-
-    @staticmethod
-    def status(substituted):
-        """Translate the Substituted status True/False into a Yes/No string."""
-        for sub in substituted:
-            return "Oui" if sub is True else "Non" 
-
-    @staticmethod
-    def sheet_view(prod_id:int):
-        """Returns the display for the product's sheet."""
-        clean()
-        prod_details = View.prod_details(prod_id)
-        print(
-            f"Le produit selectionné est:       {prod_details['name']}. \n\
-EAN-13:                           {prod_details['ean']}. \n\
-Poids:                            {prod_details['quantity']}. \n\
-\n\
-Liste d'ingrédients:\n\
-                    {prod_details['ingredients']}. \n\
-\n\
-Son substitue est:                {prod_details['subname']}. \n\
-Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
-            )
-        input("\n\nAppuyez sur Entrer pour continuer.")
+            return quantity, ingredients
 
     @staticmethod
     def substitution(prod_id:int):
@@ -158,6 +134,30 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
             prod.name for prod in session.query(Product).filter(Product.category == cat_id)
         ]
     )
+
+    @staticmethod
+    def sheet_view(prod_id:int):
+        """Returns the display for the product's sheet."""
+        clean()
+        prod_details = View.prod_details(prod_id)
+        print(
+            f"Le produit selectionné est:       {prod_details['name']}. \n\
+EAN-13:                           {prod_details['ean']}. \n\
+Poids:                            {prod_details['quantity']}. \n\
+\n\
+Liste d'ingrédients:\n\
+                    {prod_details['ingredients']}. \n\
+\n\
+Son substitue est:                {prod_details['subname']}. \n\
+Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
+            )
+        input("\n\nAppuyez sur Entrer pour continuer.")
+
+    @staticmethod
+    def status(substituted):
+        """Translate the Substituted status True/False into a Yes/No string."""
+        for sub in substituted:
+            return "Oui" if sub is True else "Non" 
 
     # Product's Sheet
     product_call = lambda prod_id: session.query(Product).filter(Product.id == prod_id)
