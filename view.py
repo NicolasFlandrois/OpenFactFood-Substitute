@@ -74,9 +74,10 @@ R pour RETOUR au menu précédent.)\n')
             return quantity, ingredients # returns a tuple
 
     @staticmethod
-    def status(substituted:bool):
+    def status(substituted):
         """Translate the Substituted status True/False into a Yes/No string."""
-        return "Non" if substituted == False else "Oui" # Issue HERE, returns only "Oui"
+        for sub in substituted:
+            return "Oui" if sub is True else "Non" 
 
     @staticmethod
     def sheet_view(prod_id:int):
@@ -119,10 +120,10 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
                         session.commit()
 
             print("La substitution a bien été enregistrer.")
-            time.sleep(3)
+            time.sleep(2)
         else:
             print("Aucune substitution n'a été éffectuée.")
-            time.sleep(3)
+            time.sleep(2)
 
     @staticmethod
     def sub_tbl_structure(prod_name:str, sub_name:str):
@@ -131,7 +132,7 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
         Data a from real time database."""
         return f"{prod_name} (Non utilisé)\n\
     Ce produit est substitué par:\n\
-    {sub_name} (Utilisé).\n"
+                                 {sub_name} (Utilisé).\n"
 
 
     # Shows Main Menu (Beginning Menu)
@@ -167,7 +168,7 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
         json_detail = View.get_off_json(prod_detail['ean'])
         prod_detail['quantity'] = json_detail[0]
         prod_detail['ingredients'] = json_detail[1]
-        prod_detail['subid'] = int(''.join(map(str,[prod.substitute for prod in View.product_call(prod_id)]))) 
+        prod_detail['subid'] = int(''.join(map(str, [prod.substitute for prod in View.product_call(prod_id)]))) 
         prod_detail['subname'] = "".join([prod.name for prod in View.product_call(prod_detail['subid'])])
         prod_detail['substatus'] = View.status([prod.substituted for prod in View.product_call(prod_id)])
         return prod_detail
@@ -193,7 +194,8 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
 
         sub_prodnames_subnames = list(zip(sub_prodnames, sub_subnames))
 
-        print("Liste des produits substitués : ")
+        clean()
+        print("Liste des produits substitués :\n")
         
         for item in sub_prodnames_subnames:
             print(View.sub_tbl_structure(item[0], item[1]))
