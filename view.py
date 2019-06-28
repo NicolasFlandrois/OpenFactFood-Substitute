@@ -97,11 +97,13 @@ R pour RETOUR au menu précédent.)\n')
                         sub.substituted = True
                         session.commit()
 
-            print("La substitution a bien été enregistrer.")
+            print("La substitution a bien été enregistrée.")
             time.sleep(2)
         else:
-            print("Aucune substitution n'a été éffectuée.")
+            print("Aucune substitution n'a été effectuée.")
             time.sleep(2)
+
+        return choice
 
     @staticmethod
     def sub_tbl_structure(prod_name:str, sub_name:str):
