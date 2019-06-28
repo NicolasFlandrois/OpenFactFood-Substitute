@@ -23,7 +23,7 @@ def set_view(view, top_level=False):
 
 def main():
     """Program's Main running function."""
-    
+
     while True:
         res = set_view(View.main_view, True)
         # ISSUE: When in Top menu main_view(), "r" and "q" for Return/Quit commands doesn't work. Quit == OK || Return == Quit but it shouldn't
@@ -52,6 +52,6 @@ def main():
 
 
 if __name__ == '__main__':
-    
-    print("Bienvenue dans ce programme.")    
+
+    print("Bienvenue dans ce programme.")
     main()
