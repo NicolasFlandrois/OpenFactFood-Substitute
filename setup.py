@@ -9,9 +9,7 @@ from sqlalchemy import create_engine, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy_utils import create_database, database_exists
-
 from models import Product, Category
-
 from datetime import datetime
 
 
