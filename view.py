@@ -80,6 +80,7 @@ R pour RETOUR au menu principal.)\n')
     @staticmethod
     def sheet_view(prod_id:int):
         """Returns the display for the product's sheet."""
+        clean()
         prod_details = View.prod_details(prod_id)
         print(
             f"Le produit selectionné est:       {prod_details['name']}. \n\
@@ -92,21 +93,25 @@ Liste d'ingrédients:\n\
 Son substitue est:                {prod_details['subname']}. \n\
 Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
             )
+        input("\n\nAppuyez sur Entrer pour continuer.")
 
     @staticmethod
-    def substitution(product_id:bool):
+    def substitution(product_id:bool): # Issues HERE Query changes PB
         """Action to apply Substitution"""
-        get_prod(product_id).substituted = True
-        get_prod(product_id).substitute.substituted = False
-        session.commit()
-        return "La substitution a bien été enregistrer."
+        choice = View.submenu_view()
+        if choice == 1:
+            View.product_call(product_id).substituted = True
+            View.product_call(product_id).substitute.substituted = False
+            session.commit()
+            print("La substitution a bien été enregistrer.")
+        else:
+            print("Aucune substitution n'a été éffectuée.")
 
     @staticmethod
     def sub_tbl_structure(prod_name:str, sub_name:str):
         """This function will display the list of all substituted products in
         the database, along with its matching substitute.
         Data a from real time database."""
-        # print("Liste des produits substitués en ce moment, et leurs substitus.\n")
         return f"{prod_name} (Non utilisé)\n\
     Ce produit est substitué par:\n\
     {sub_name} (Utilisé).\n"
@@ -176,11 +181,4 @@ Ce produit est-il déjà substitué? {prod_details['substatus']}. \n"
         for item in sub_prodnames_subnames:
             print(View.sub_tbl_structure(item[0], item[1]))
 
-# TEST
-# View.main_view() # ok
-# View.submenu_view() # ok
-# View.sub_tbl() # OK
-# View.cats_view() # OK
-# View.prods_view(2) # OK
-
-View.sheet_view(2)
+        input("\n\nAppuyez sur Entrer pour continuer.")

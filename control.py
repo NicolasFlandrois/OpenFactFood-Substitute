@@ -25,18 +25,18 @@ def main():
     """Main running function."""
     
     while True:
-        res = set_view(View.main_menu, True)
+        res = set_view(View.main_view, True)
         if res == 1:
             while True:
-                cat_id = set_view(View.categories_list)
+                cat_id = set_view(View.cats_view)
                 if cat_id:
                     while True:
-                        prod_id = set_view(lambda: View.products_list(cat_id))
+                        prod_id = set_view(lambda: View.prods_view(cat_id))
                         if not prod_id:
                             break
                         while True:
-                            set_view(lambda: View.product_sheet(prod_id))
-                            set_view(lambda: View.prod_sub(prod_id))
+                            set_view(lambda: View.sheet_view(prod_id))
+                            set_view(lambda: View.substitution(prod_id))
                             break
                 if not cat_id:
                     break
