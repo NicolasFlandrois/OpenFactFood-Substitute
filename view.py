@@ -9,14 +9,16 @@ import sqlalchemy as al
 from sqlalchemy.orm import sessionmaker, query
 from sqlalchemy import create_engine, update
 from models import Product, Category
-import os, platform
+import os 
+import platform
 from connection import connect
 import time
 
 session = connect()
 
+
 def clean():
-    """This function will clear the terminal's screen. The command is 
+    """This function will clear the terminal's screen. The command is
     automaticaly detected according to the system OS you run it.
     Compatible with Windows, OSx, and Linux."""
     os.system("cls" if platform.system() == "Windows" else "clear")
