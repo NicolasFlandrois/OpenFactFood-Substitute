@@ -42,6 +42,8 @@ def main():
         elif res == 2:
             set_view(View.sub_tbl)
             res = set_view(lambda: View.menu("Question:", ["Retour Menu Principal", "Quitter"]))
+            if res == 2:
+                exit()
             if not res:
                 continue
 
