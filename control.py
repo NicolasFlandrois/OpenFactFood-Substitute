@@ -22,10 +22,11 @@ def set_view(view, top_level=False):
 
 
 def main():
-    """Main running function."""
+    """Program's Main running function."""
     
     while True:
         res = set_view(View.main_view, True)
+        # ISSUE: When in Top menu main_view(), "r" and "q" for Return/Quit commands doesn't work. Quit == OK || Return == Quit but it shouldn't
         if res == 1:
             while True:
                 cat_id = set_view(View.cats_view)
@@ -37,6 +38,7 @@ def main():
                         while True:
                             set_view(lambda: View.sheet_view(prod_id))
                             set_view(lambda: View.substitution(prod_id))
+                            # ISSUE: When in substitution()'s sub menu, the choice is: 1 to apply substitution, 2 to not apply sub, r to return to the previous menu, q to quit >>> However, Quit reacts like a return command... It should Quit/Exit the program
                             break
                 if not cat_id:
                     break
@@ -44,6 +46,7 @@ def main():
         elif res == 2:
             set_view(View.sub_tbl)
             res = View.menu("Question:", ["Retour Menu Principale", "Quitter"])
+            # ISSUE: When finishing visualising the sub_tbl() (after clicking enter to continue) the "q" for Quit command don't work. Instead of Quitting/Exiting the program, it actually returns to the main_view() as a return command.
             if not res:
                 continue
 
