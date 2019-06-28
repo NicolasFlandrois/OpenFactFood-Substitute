@@ -58,11 +58,11 @@ if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
     metadata.create_all(engine)
 
     # 4/ Fill in info to database according to tables, with seed data.
-
+    # 4.1/ Fill Category table with category data.
     categories = ("pâte à tartiner", "confiture", "sirop")
     for i in categories:
         engine.execute(category.insert(), name=i)
-
+    # 4.2/Fill Product table with Products data.
     prods = [("3017620429484", "Nutella - Ferrero", 1, 2, False),
              ("3560070472888", "Pâte à tartiner - Carrefour Bio", 1, 1, True),
              ("5410126006957", "The original speculoos - Lotus", 1, 4, False),
@@ -90,17 +90,18 @@ if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
              ("3088545004001", "Miel de fleurs - Lune de Miel", 3, 18, False),
              ("3088540202860", "Miel du Poitou-Charente - Miel l\'Apiculteur", 3,
               17, True)]
-
+    # 4.3/ Parsing and inserting all data.
     for index, (ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, name=name,
                        category=category, substituted=substituted)
 
-    # create a configured "Session" class
+    # 5/ Create a configured "Session" class
     Session = sessionmaker(bind=engine)
-    # create a Session
+    # 6/ Create a Session
     session = Session()
 
-
+    # 7/ Updating info that couldn't be loaded during first run
+    # (e.g. substitute id)
     products = session.query(Product).all()
     for n in range(0, len(products), 2):
         prod = products[n]
@@ -109,12 +110,18 @@ if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
         sub.substitute = prod.id
     session.commit()
 
+    # 8/ Mesuring time to setup, and informing user, the database was created
+    # successfully.
     finishTime = datetime.now()
     timeDetla = finishTime-startTime
 
     print("Setup is finished. Your database is available now.")
     print("The process was completed in : " + str(
         timeDetla.total_seconds()) + "s.")
+
+# If the database already exist, then inform the user about it.
+else:
+    print("Your database already exists.")
 
     # NB ATTENTION: Improvement to provide here, for further development:
     # here the databae's seed is made in a way, that the substitute follows the
