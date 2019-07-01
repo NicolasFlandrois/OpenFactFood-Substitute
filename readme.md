@@ -10,8 +10,23 @@
 -------------------------------------------------------------
 
 **Description**:
+This program will display a product management system, running from terminal, without GUI.
+
+Through a menu, the user will select a product from the MySQL database set.
+The program will display the product's sheet, along with the name of its substitute, and whether it's been substituted already.
+Then the user will be presented with a choice, whether to apply a substitution, or not.
+
+From the main menu, the user can also choose to display all curently substituted products (Not in use at the time), along with corresponding substitution in use. The display is a list of items, readable in one page.
+
+At any time, when the program offers a choice menu, the user can either return to the previous menu, or quit the program.
+
+*NB*: All changes in substitution, will be registered in the MySQL database. This persistence allow the user to manage updated system over time.
 
 ***How to run this script***:
+After updating (or installing) MySQL, and all required dependencies,
+Launch the program in python, with the file control.py
+
+	python3.7 control.py
 
 -------------------------------------------------------------
 
