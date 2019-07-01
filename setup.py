@@ -68,30 +68,35 @@ if not database_exists(f'mysql+pymysql://{username}:{password}@{host}/off1'):
              ("5410126006957", "The original speculoos - Lotus", 1, 4, False),
              ("3700774300487", "Pâte à tartiner Speculos - Speculoos ", 1, 3,
               True),
-             ("3760091721747", "Beurre de cacahuètes - Ethiquable", 1, 6, False),
+             ("3760091721747", "Beurre de cacahuètes - Ethiquable", 1, 6,
+              False),
              ("8710795630918", "peanut butter - Jack Klijn", 1, 5, True),
              ("3045320001525", "Confiture Extra Fraises - Bonne Maman", 2, 8,
               False),
-             ("3560070986897", "Confiture de fraises - Reflets de France", 2, 7,
-              True),
+             ("3560070986897", "Confiture de fraises - Reflets de France", 2,
+              7, True),
              ("3608580750031", "Confiture à L\'Abricot - Bonne Maman", 2, 10,
               False),
-             ("3245390034830", "Confiture d\'abricots - Reflets de France", 2, 9,
-              True),
+             ("3245390034830", "Confiture d\'abricots - Reflets de France", 2,
+              9, True),
              ("3045320001648", "Confiture orange - Bonne Maman", 2, 12,
               False),
-             ("3245390060709", "Confiture d\'oranges - Reflets de France", 2, 11,
-              True),
-             ("2001111060035", "Coulis de fraises - Atelier Des Gouts Sucres", 3,
-              14, False),
+             ("3245390060709", "Confiture d\'oranges - Reflets de France", 2,
+              11, True),
+             ("2001111060035", "Coulis de fraises - Atelier Des Gouts Sucres",
+              3, 14, False),
              ("3228170819506", "Coulis Fraises - Ponthier", 3, 13, True),
-             ("3088542500278", "Pur Sirop d\'érable - Maple joe", 3, 16, False),
-             ("0815126002179", "Sirop D\'érable Pur 100% - Nokomis", 3, 15, True),
+             ("3088542500278", "Pur Sirop d\'érable - Maple joe",
+              3, 16, False),
+             ("0815126002179", "Sirop D\'érable Pur 100% - Nokomis", 3, 15,
+              True),
              ("3088545004001", "Miel de fleurs - Lune de Miel", 3, 18, False),
-             ("3088540202860", "Miel du Poitou-Charente - Miel l\'Apiculteur", 3,
-              17, True)]
+             ("3088540202860", "Miel du Poitou-Charente - Miel l\'Apiculteur",
+              3, 17, True)]
+
     # 4.3/ Parsing and inserting all data.
-    for index, (ean, name, category, substitute, substituted) in enumerate(prods):
+    for index, (
+      ean, name, category, substitute, substituted) in enumerate(prods):
         engine.execute(product.insert(), ean=ean, name=name,
                        category=category, substituted=substituted)
 

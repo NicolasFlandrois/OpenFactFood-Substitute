@@ -22,8 +22,9 @@ def connect():
         port = config["port"]
 
         engine = create_engine(
-            f'mysql+pymysql://{username}:{password}@{host}/off1?host={host}?port=\
-            {port}', echo=False, encoding='utf8', pool_recycle=60000,
+            f'mysql+pymysql://{username}:{password}@{host}/\
+off1?host={host}?port={port}',
+            echo=False, encoding='utf8', pool_recycle=60000,
             pool_pre_ping=True)
 
         Session = sessionmaker(bind=engine)
