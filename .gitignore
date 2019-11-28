@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 auth.py
+config.json
 __pycache__/
 *.py[cod]
 *$py.class
